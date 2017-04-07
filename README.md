@@ -1,2 +1,2 @@
 # Grease-Monkey-Scripts
-For using in Grease Monkey extension on Mozilla Firefox or cjs (https://chrome.google.com/webstore/detail/custom-javascript-for-web/poakhlngfciodnhlhhgnaaelnpjljija) extension on Google Chrome.
+For using in <b>Grease Monkey</b> extension on Mozilla Firefox or <b>cjs</b> (https://chrome.google.com/webstore/detail/custom-javascript-for-web/poakhlngfciodnhlhhgnaaelnpjljija) extension on Google Chrome.
