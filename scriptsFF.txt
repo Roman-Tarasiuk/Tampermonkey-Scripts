@@ -1,0 +1,1228 @@
+//
+// Firefox
+//
+
+<scripts.library.js>
+//
+// ** Encoding functions
+//
+
+// http://stackoverflow.com/questions/2696481/encoding-conversation-utf-8-to-1251-in-javascript
+//
+var DMap = { 0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, 11: 11, 12: 12, 13: 13, 14: 14, 15: 15, 16: 16, 17: 17, 18: 18, 19: 19, 20: 20, 21: 21, 22: 22, 23: 23, 24: 24, 25: 25, 26: 26, 27: 27, 28: 28, 29: 29, 30: 30, 31: 31, 32: 32, 33: 33, 34: 34, 35: 35, 36: 36, 37: 37, 38: 38, 39: 39, 40: 40, 41: 41, 42: 42, 43: 43, 44: 44, 45: 45, 46: 46, 47: 47, 48: 48, 49: 49, 50: 50, 51: 51, 52: 52, 53: 53, 54: 54, 55: 55, 56: 56, 57: 57, 58: 58, 59: 59, 60: 60, 61: 61, 62: 62, 63: 63, 64: 64, 65: 65, 66: 66, 67: 67, 68: 68, 69: 69, 70: 70, 71: 71, 72: 72, 73: 73, 74: 74, 75: 75, 76: 76, 77: 77, 78: 78, 79: 79, 80: 80, 81: 81, 82: 82, 83: 83, 84: 84, 85: 85, 86: 86, 87: 87, 88: 88, 89: 89, 90: 90, 91: 91, 92: 92, 93: 93, 94: 94, 95: 95, 96: 96, 97: 97, 98: 98, 99: 99, 100: 100, 101: 101, 102: 102, 103: 103, 104: 104, 105: 105, 106: 106, 107: 107, 108: 108, 109: 109, 110: 110, 111: 111, 112: 112, 113: 113, 114: 114, 115: 115, 116: 116, 117: 117, 118: 118, 119: 119, 120: 120, 121: 121, 122: 122, 123: 123, 124: 124, 125: 125, 126: 126, 127: 127, 1027: 129, 8225: 135, 1046: 198, 8222: 132, 1047: 199, 1168: 165, 1048: 200, 1113: 154, 1049: 201, 1045: 197, 1050: 202, 1028: 170, 160: 160, 1040: 192, 1051: 203, 164: 164, 166: 166, 167: 167, 169: 169, 171: 171, 172: 172, 173: 173, 174: 174, 1053: 205, 176: 176, 177: 177, 1114: 156, 181: 181, 182: 182, 183: 183, 8221: 148, 187: 187, 1029: 189, 1056: 208, 1057: 209, 1058: 210, 8364: 136, 1112: 188, 1115: 158, 1059: 211, 1060: 212, 1030: 178, 1061: 213, 1062: 214, 1063: 215, 1116: 157, 1064: 216, 1065: 217, 1031: 175, 1066: 218, 1067: 219, 1068: 220, 1069: 221, 1070: 222, 1032: 163, 8226: 149, 1071: 223, 1072: 224, 8482: 153, 1073: 225, 8240: 137, 1118: 162, 1074: 226, 1110: 179, 8230: 133, 1075: 227, 1033: 138, 1076: 228, 1077: 229, 8211: 150, 1078: 230, 1119: 159, 1079: 231, 1042: 194, 1080: 232, 1034: 140, 1025: 168, 1081: 233, 1082: 234, 8212: 151, 1083: 235, 1169: 180, 1084: 236, 1052: 204, 1085: 237, 1035: 142, 1086: 238, 1087: 239, 1088: 240, 1089: 241, 1090: 242, 1036: 141, 1041: 193, 1091: 243, 1092: 244, 8224: 134, 1093: 245, 8470: 185, 1094: 246, 1054: 206, 1095: 247, 1096: 248, 8249: 139, 1097: 249, 1098: 250, 1044: 196, 1099: 251, 1111: 191, 1055: 207, 1100: 252, 1038: 161, 8220: 147, 1101: 253, 8250: 155, 1102: 254, 8216: 145, 1103: 255, 1043: 195, 1105: 184, 1039: 143, 1026: 128, 1106: 144, 8218: 130, 1107: 131, 8217: 146, 1108: 186, 1109: 190 };
+
+function UnicodeToWin1251(s) {
+    var L = [];
+    for (var i = 0; i < s.length; i++) {
+        var ord = s.charCodeAt(i);
+        if (!(ord in DMap)) {
+            throw "Character " + s.charAt(i) + " isn't supported by win1251!"
+        }
+        L.push(String.fromCharCode(DMap[ord]));
+    }
+    return L.join('');
+}
+
+// https://www.opennet.ru/tips/915_utf8_unicode_javascript_java_koi8r.shtml
+//
+var koi2utf = { 163: 1105, 179: 1025, 192: 1102, 193: 1072, 194: 1073, 195: 1094, 196: 1076, 197: 1077, 198: 1092, 199: 1075, 200: 1093, 201: 1080, 202: 1081, 203: 1082, 204: 1083, 205: 1084, 206: 1085, 207: 1086, 208: 1087, 209: 1103, 210: 1088, 211: 1089, 212: 1090, 213: 1091, 214: 1078, 215: 1074, 216: 1100, 217: 1099, 218: 1079, 219: 1096, 220: 1101, 221: 1097, 222: 1095, 223: 1098 };
+
+function koi2unicode (str) {
+    if (str == null) {
+        return null;
+    }
+    var result = "";
+    var o_code = "";
+    var i_code = "";
+    for (var I=0; I < str.length; I++) {
+        i_code = str.charCodeAt(I);
+
+        if (koi2utf[i_code] != null){
+            o_code = koi2utf[i_code];
+        } else if (i_code > 223 && koi2utf[i_code - 32] != null){
+            o_code = koi2utf[i_code - 32] - 32;
+        } else {
+            o_code = i_code;
+        }
+        result = result + String.fromCharCode(o_code);
+    }
+
+    return result;
+}
+
+function win2unicode (str) {
+    if (str == null){
+        return null;
+    }
+    var result = "";
+    var o_code = "";
+    var i_code = "";
+    for (var I=0; I < str.length; I++) {
+        i_code = str.charCodeAt(I);
+
+        if (i_code == 184){
+            o_code = 1105;
+        } else if (i_code == 168){
+            o_code = 1025;
+        } else if (i_code > 191 && i_code < 256){
+            o_code = i_code + 848;
+        } else {
+            o_code = i_code;
+        }
+        result = result + String.fromCharCode(o_code);
+    }
+
+    return result;
+}
+
+// http://stackoverflow.com/questions/16914085/how-to-convert-utf-8-string-to-urlencoded-win1251-in-javascript
+// var DMap = {0: 0,... for using in the next function is the same as in the code above
+//
+function unicodeToWin1251_UrlEncoded(s) {
+    var L = [];
+    for (var i = 0; i < s.length; i++) {
+        var ord = s.charCodeAt(i);
+        if (!(ord in DMap)) {
+            throw "Character " + s.charAt(i) + " isn't supported by win1251!";
+        }
+        L.push('%'+DMap[ord].toString(16));
+    }
+    return L.join('').toUpperCase();
+}
+
+
+//
+// ** <textarea> functions
+//
+
+// http://stackoverflow.com/questions/9185630/find-out-the-line-row-number-of-the-cursor-in-a-textarea
+function getSelectionStartLine(textarea) {
+    return textarea.value.substr(0, textarea.selectionStart).split("\n").length;
+}
+
+// By analogy to getSelectionStartLine
+function getSelectionEndLine(textarea) {
+    return textarea.value.substr(0, textarea.selectionEnd).split("\n").length;
+}
+
+function selectTextareaLine (textarea, lineNum) {
+    lineNum--; // array starts at 0
+    var lines = textarea.value.split("\n");
+
+    // calculate start/end
+    var startPos = 0, endPos = textarea.value.length;
+    for (var x = 0; x < lines.length; x++) {
+        if (x == lineNum) {
+            break;
+        }
+        startPos += (lines[x].length + 1);
+    }
+
+    var endPos = lines[lineNum].length + startPos;
+
+    // Chrome / Firefox
+    if (typeof(textarea.selectionStart) != "undefined") {
+        textarea.focus();
+        textarea.selectionStart = startPos;
+        textarea.selectionEnd = endPos;
+        return true;
+    }
+
+    // IE
+    if (document.selection && document.selection.createRange) {
+        textarea.focus();
+        textarea.select();
+        var range = document.selection.createRange();
+        range.collapse(true);
+        range.moveEnd("character", endPos);
+        range.moveStart("character", startPos);
+        range.select();
+        return true;
+    }
+
+    return false;
+}
+
+function getLinesInTextarea(textarea) {
+    return textarea.value.split('\n').length;
+}
+
+
+//
+// ** Cookies functions
+// http://www.w3schools.com/js/js_cookies.asp
+//
+// Do not forget about cookies symbols - replace ';' to some string before saving and restore it while retrieving
+//
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    
+    return "";
+}
+
+
+//
+// ** DOM functions
+//
+
+// http://stackoverflow.com/questions/4793604/how-to-do-insert-after-in-javascript-without-using-a-library
+//
+function insertAfter(newNode, referenceNode) {
+    if (referenceNode.nextSibling) {
+        referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+    }
+    else {
+        referenceNode.parentNode.appendChild(newNode);
+    }
+}
+</scripts.library.js>
+
+
+// ==UserScript==
+// @name        Database Info Page
+// @namespace   NNN
+// @include     http://www...
+// @version     1
+// @grant       none
+// ==/UserScript==
+
+window.onload = function() { // In Google Chrome (cjs) run the next code outside of window.onload;
+                             // also replace /(<input name="queries")/g to /(<input type="radio")/g
+                             // and /(<br>)/g to /(<br \/>)/g
+                             //
+                             // In Mozilla Firefox (Grease Monkey) add the script when no other tabs are opened
+                             // (if use with 'Higlight Links' script).
+
+   document.title = "Databases Info Page"; // Also can be run outside of window.onload.
+
+
+   var fr0 = document.querySelector('frame');
+   fr0.id = 'fr0';
+   fr0 = document.getElementById('fr0');
+
+   var td = fr0.contentWindow.document.querySelector('td');
+
+   // Works but is hardcoded.
+   //td.innerHTML = '<form method="get" action="/cgi/directory/request.cgi" enctype="application/x-www-form-urlencoded" target="request" name="query"><select name="database"><option value=...</form>';
+
+   td.innerHTML = td.innerHTML.replace(/(<input name="queries")/g, '<label>$1')
+       .replace(/(<br>)/g, '</label>$1');
+};
+
+
+
+// ==UserScript==
+// @name        Abbyy Lingvo - Remove redundant languages
+// @namespace   AbbyyLingvo
+// @include     http://www.lingvo.ua/*
+// @version     1
+// @grant       none
+// ==/UserScript==
+//
+//
+// String below (commented) is necessary.
+// @require ..\scripts.jquery3.1.0.min.js
+//
+(function() {
+    var languages = ['el', 'da', 'es', 'it', 'kk', 'zh-CN', 'la', 'nl', 'de',
+                     'nb-no', 'pl', 'pt-br', 'tt', 'tr', 'hu', 'fi', 'fr'];
+
+    function removeIt(what) {
+        for(var i = 0; i < languages.length; i++) {
+            var str = "#Search" + what + "Lang option[value='" + languages[i] + "']";
+            $(str).remove();
+        }
+    }
+
+    removeIt("Src");
+    removeIt("Dest");
+})();
+
+(function(textInputId) {
+    var clicks = 0;
+    
+    $(textInputId).on('click', function() {
+        if (clicks == 0) {
+            this.selectionStart = 0;
+            this.selectionEnd = this.textLength;
+            clicks = 1;
+        }
+        else {
+            clicks = 0;
+        }
+    });
+    
+    $(textInputId).on('blur', function() {
+        clicks = 0;
+    });
+})("#searchText");
+
+(function() {
+    $("[class=\"g-menubox__item submenu js-dict-menu\"]").css("visibility", "hidden");
+})();
+
+
+
+// ==UserScript==
+// @name        Beautify links - www...
+// @namespace   NNN
+// @include     https://www...
+// @version     1
+// @grant       none
+// ==/UserScript==
+
+window.onload = function() {
+    var st2 = document.createElement('style');
+    st2.innerHTML = 'A:hover { color: #888; font-weight: normal; }';
+    document.getElementsByTagName('head')[0].appendChild(st2);
+}
+
+
+
+// ==UserScript==
+// @name        GitHub
+// @namespace   GitHub
+// @include     https://github.com/*
+// @version     1
+// @grant       none
+// ==/UserScript==
+
+
+// var commitsIndicator = document.getElementsByClassName('numbers-summary')[0].children[0].children[0];
+// 
+// commitsIndicator.style.color = "#f66"
+// commitsIndicator.style.fontSize = "1.3em";
+// commitsIndicator.style.fontWeight = "900"
+
+
+function styleGithub() {
+    var element;
+
+    element =
+            document.getElementsByClassName('numbers-summary');
+
+    if (   element
+        && element[0]
+        && element[0].children
+        && element[0].children[0]
+        && element[0].children[0].children) {
+      element = element[0].children[0].children[0];
+      element.style.color = "#f66"
+      element.style.fontSize = "1.3em";
+      element.style.fontWeight = "900";
+    }
+
+    element =
+        document.getElementsByClassName('js-selected-navigation-item');
+    
+    if (   element
+        && element[3]
+        && element[3].children) {
+      element = element[3].children[1];
+      element.style.color = "#f66";
+      element.style.fontWeight = "900";
+    }
+}
+
+styleGithub();
+setInterval(styleGithub, 2000);
+
+
+
+// ==UserScript==
+// @name        Google
+// @namespace   google
+// @include     https://www.google.com.ua/*
+// @version     1
+// @grant       none
+// ==/UserScript==
+
+console.log('...');
+
+var resultsBoxes = document.getElementsByClassName('mnr-c');
+
+for (var i = 0; i < resultsBoxes.length; i++) {
+    resultsBoxes[i].style.boxShadow = '0 0px 0px rgba(0, 0, 0, 0.08), 0 0 0 0px rgba(0, 0, 0, 0.02)';
+    resultsBoxes[i].style.backgroundColor = '#fafafa';
+    resultsBoxes[i].style.margin = '0 0 2px';
+}
+
+
+
+// ==UserScript==
+// @name        Google Translator
+// @namespace   google.com
+// @include     https://translate.google.com/*
+// @version     1
+// @grant       none
+// ==/UserScript==
+
+/* Working version 1
+window.onload = function() {
+  var src = document.getElementById('source');
+  if (src == null) {
+    console.log('************************************** null **************************************');
+  }
+  else {
+    console.log('************************************** not null **************************************');
+    
+    var clicks = 0;
+    
+    src.onclick = function() {
+      if (clicks == 0) {
+        src.selectionStart = 0;
+        src.selectionEnd = this.textLength;
+        clicks = 1;
+      }
+      else {
+        clicks = 0;
+      }
+    }
+    
+    src.onblur = function() {
+      clicks = 0;
+    }
+  }
+}
+//*/
+
+//* Working version 2
+window.onload = function(id) {
+    var src = document.getElementById(id);
+    if (src == null) {
+       return;
+    }
+
+    var clicks = 0;
+
+    src.onclick = function() {
+        if (clicks == 0) {
+            src.selectionStart = 0;
+            src.selectionEnd = this.textLength;
+            clicks = 1;
+        }
+        else {
+            clicks = 0;
+        }
+    }
+
+    src.onblur = function() {
+        clicks = 0;
+    }
+}('source');
+//*/
+
+/* Working version 3
+(function(id) {
+    var src = document.getElementById(id);
+    if (src == null) {
+       return;
+    }
+
+    var clicks = 0;
+
+    src.onclick = function() {
+        if (clicks == 0) {
+            src.selectionStart = 0;
+            src.selectionEnd = this.textLength;
+            clicks = 1;
+        }
+        else {
+            clicks = 0;
+        }
+    }
+
+    src.onblur = function() {
+        clicks = 0;
+    }
+})('source');
+//*/
+
+
+
+// ==UserScript==
+// @name        Higlight Links - www...
+// @namespace   NNN
+// @include     http*://www...
+// @version     1
+// @grant       none
+// ==/UserScript==
+
+window.onload = function() {
+    var allLinks = document.getElementsByTagName('a');
+    
+    function decorate(title, color) {
+        var element = null;
+        
+        for (var i = 0; i < allLinks.length; i++) {
+           if (allLinks[i].text == title) {
+               element = allLinks[i];
+               break;
+           }
+        }
+        
+        if (element != null) {
+            element.text = '* ' + element.text;
+            element.style.color = color;
+            element.style["font-weight"] = 'bold';
+            element.style["font-size"] = '14px';
+            element.style["text-decoration"] = 'underline';
+        }
+    }
+    
+    decorate ('Телефонний довiдник', 'green');
+    decorate ('Служба підтримки користувачів', 'red');
+    
+    //
+    
+    function appendStyle(style) {
+        var st = document.createElement('style');
+        st.innerHTML = style;
+        document.getElementsByTagName('head')[0].appendChild(st);
+    }
+    
+    appendStyle('.menu_item:hover { color: #444; font-weight: normal; text-decoration: underline }');
+    appendStyle('.menu_item {padding-left: 10px;}');
+    appendStyle('body, td { color: black; font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif; font-size: 14px; }');
+    appendStyle('.news_header { color: black; font-size: 15px; text-decoration: none; }');
+    appendStyle('a, a:hover { font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif; }');
+    appendStyle('.book_link_item { font-size: 14px; }')
+    appendStyle('.sign_path, .sign_path:hover { color: black; font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif; font-size: 14px; }');
+    appendStyle(' .td_menu_item, .td_menu_item_icon { background-color: #fefc67; border-bottom: 1px solid #e1e1e1; color: black; }');
+    
+    //
+    
+    var a_news_header = document.getElementsByClassName('news_header');
+    for (var i = 0; i < a_news_header.length; i++) {
+        a_news_header[i].removeAttribute('style');
+    }
+
+    //
+    // http://stackoverflow.com/questions/3387427/remove-element-by-id
+    
+    Element.prototype.remove = function() {
+        this.parentElement.removeChild(this);
+    }
+    
+    NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+        for(var i = this.length - 1; i >= 0; i--) {
+            if(this[i] && this[i].parentElement) {
+                this[i].parentElement.removeChild(this[i]);
+            }
+        }
+    }
+    
+    document.querySelectorAll('img[src="http://www/main/img/arr1.gif"]').remove();
+    
+    //
+    
+    (function(id) {
+      var src = document.getElementById(id);
+      if (src == null) {
+        console.log('***** null *****');
+        return;
+      }
+
+      var clicks = 0;
+
+      src.onclick = function() {
+        if (clicks == 0) {
+          src.selectionStart = 0;
+          src.selectionEnd = this.textLength;
+          clicks = 1;
+        }
+        else {
+          clicks = 0;
+        }
+      }
+
+      src.onblur = function() {
+        clicks = 0;
+      }
+    })('query_txt');
+}
+
+
+
+// ==UserScript==
+// @name        Jira Style
+// @namespace   Jira
+// @include     http://www/jira/*
+// @version     1
+// @grant       none
+// ==/UserScript==
+
+window.onload = function() {
+    var st1 = document.createElement('style');
+    st1.innerHTML = '.activity-name { border-bottom: 1px dashed #aaa; color: #666; min-width: 150px; }';
+    document.getElementsByTagName('head')[0].appendChild(st1);
+  
+    var st2 = document.createElement('style');
+    st2.innerHTML = '.activity-old-val, .activity-new-val { border-bottom: 1px dashed #aaa; min-width: 250px; }';
+    document.getElementsByTagName('head')[0].appendChild(st2);
+    
+    var st3 = document.createElement('style');
+    st3.innerHTML = '::-moz-selection { color: black; background: #9bf; } ::selection { color: black; background: #9bf; }';
+    document.getElementsByTagName('head')[0].appendChild(st3);
+    
+    /*
+    var st4 = document.createElement('style');
+    st4.innerHTML = '.issue-data-block { border: 5px solid #ccc; padding: 10px; }';
+    document.getElementsByTagName('head')[0].appendChild(st4);
+    */
+    
+    // Next code works, but approach, that is going below, is better
+    //
+    // var worklogcalc = document.getElementById('worklogcalk_link');
+    // worklogcalc.style.fontWeight = 'bold';
+    // worklogcalc.style.color = '#ddd';
+    // worklogcalc.style.backgroundColor = '#222';
+    
+    // http://stackoverflow.com/questions/11371550/change-hover-css-properties-with-javascript
+    //
+    var css = 'a#worklogcalk_link:hover, a#crowd_link:hover {color: #fff} a#worklogcalk_link, a#crowd_link {color: #66f; font-weight: bold;}';
+    style = document.createElement('style');
+    
+    if (style.styleSheet) {
+        style.styleSheet.cssText = css;
+    } else {
+        style.appendChild(document.createTextNode(css));
+    }
+    
+    document.getElementsByTagName('head')[0].appendChild(style);
+}
+
+
+
+// ==UserScript==
+// @name        Login Reminder
+// @namespace   NNN
+// @include     https://www/ibm/console/profileSelection
+// @include     https://www/ibm/console/logon.jsp
+// @version     1
+// @grant       none
+// ==/UserScript==
+
+var div = document.createElement('div');
+div.style.cssText = 'background-color: red; color: white; padding: 2px 2px 2px 20px';
+div.innerHTML = 'Go to <a style="color: white;" href="https://www:9043/ibm/console/profileSelection">link</a> for login.';
+
+var before = document.getElementsByTagName('form')[0];
+
+if (before != undefined) {
+  document.body.children[0].insertBefore(div, before);
+}
+else {
+}
+
+
+
+// ==UserScript==
+// @name        scripts.test_sp_bm_mq.php - Extension
+// @namespace   NNN
+// @include     https://www/test_sp_bm_mq.php
+// @version     1
+// @grant       none
+// @require     ..\scripts.library.js
+// @require     ..\scripts.jquery3.1.0.min.js
+// ==/UserScript==
+
+//
+// The code uses 'library.js' - see incstruction above
+//
+
+
+//
+// ** Settings
+//
+
+//var resultsDefaults = '<p style="margin: 0;">Results:</p>';
+var resultsDefaults = '';
+var resultsDivHeight = '350px';
+var bodyColor = '#e6f7ff';
+var divColor = '#abc';
+var resultsColor = '#9fb';
+
+
+//
+// ** Main code
+//
+
+function appendExtension(indexBefore, id, queryStrArr, encodings, defEncodingIndex, enabled, additionalArgs) {
+    var encodingsTmp = encodings.slice();
+    encodingsTmp.splice(encodingsTmp.length, 0, 'Default');
+
+    var encodingsHTML = '<div style="display: inline-block;">\n';
+    for (var i = 0; i < encodingsTmp.length; i++) {
+        encodingsHTML += '<input type=radio name="encoding_' + id + '" id="encoding_' + id + i + '" value="' + encodingsTmp[i] +'"' + (i == defEncodingIndex ? ' checked' : '') + '>'
+                       + '<label for="encoding_' + id + i + '">' + encodingsTmp[i] + '</label>'
+                       + '<br/>\n';
+    }
+    encodingsHTML += '</div>\n';
+
+    //var testCasesHTML = '<div style="display: inline-block;"><span style="vertical-align: middle;">...</span></div>\n';
+    var testCasesHTML = '<div style="display: inline-block; vertical-align: top;">\n'
+                      + '<p style="margin: 0;">&nbsp;</p>'
+                      + '  <button onclick="setTestCaseFields(\'' + id + '\')">Set values</button><br/>\n'
+                      + '  <button onclick="setTestCaseFields(\'' + id + '\', \'prev\', true)">Previous</button><br/>\n'
+                      + '  <button onclick="setTestCaseFields(\'' + id + '\', \'next\', true)">Next</button><br/>\n'
+                      + '</div>\n'
+                      + '<div style="display: inline-block; vertical-align: top;">\n'
+                      + '  <p style="margin: 0;">Test cases:</p>'
+                      + '  <textarea style="height: 100px; width: 800px;" id="tests_' + id + '"></textarea>\n'
+                      + '</div>\n';
+
+    var extHTML = '<div>\n'
+                + '<p style=\'margin: 0; color: #777; font-size: x-small;\'>' + id + '</p>\n'
+                + '    <input type=submit id="process_' + id + '" value="Process"' + (!enabled ? ' disabled' : '') + '/>'
+                + '    <input type=button id="clear_' + id + '" value="Clear results"/>\n'
+                + '    <button onclick="resetFields(\'' + id + '\')">Reset fields</button>\n'
+                + '</div>\n'
+                + encodingsHTML
+                + testCasesHTML
+                + '<div id="results_' + id + '" style="overflow-x: auto; overflow-y: auto; background-color: ' + resultsColor + ';">' + resultsDefaults + '</div>';
+
+    var newElement = document.createElement('div');
+    newElement.innerHTML = extHTML;
+
+    var place = document.children[0].children[1];
+    var before = place.children[indexBefore];
+
+    try {
+        place.insertBefore(newElement, before);
+    }
+    catch (Exception) {
+        log('Error while inserting extension element.');
+        return;
+    }
+    
+    var toCookiesRE = /\n/g;
+    var cookieReplacementString = '@@@@';
+    var fromCookiesRE = new RegExp(cookieReplacementString, 'g');
+    
+    $('#' + 'tests_' + id).val(getCookie('#' + 'tests_' + id + ((additionalArgs != undefined) && (additionalArgs.cookieSuffix != undefined) ? additionalArgs.cookieSuffix : '')).replace(fromCookiesRE, '\n'));
+
+    $('#' + 'tests_' + id).bind('input propertychange', function() {
+        setCookie('#' + 'tests_' + id + ((additionalArgs != undefined) && (additionalArgs.cookieSuffix != undefined) ? additionalArgs.cookieSuffix : ''),
+            $('#' + 'tests_' + id).val().replace(toCookiesRE, cookieReplacementString),
+            1000);
+    });
+    
+    var count = 0;
+
+    //
+    window['controlsArray_' + id] = [];
+    window['defaultValuesArray_' + id] = [];
+
+    for (var i = 0; i < queryStrArr.length; i++) {
+        if (queryStrArr[i].eval != undefined) {
+            var objStr = queryStrArr[i].eval.substring(0, queryStrArr[i].eval.lastIndexOf('.'));
+            if (objStr.startsWith('unicodeToWin1251_UrlEncoded(')) {
+                objStr = objStr.substring(objStr.indexOf('(') + 1);
+            }
+            var ctrl = eval(objStr);
+            window['controlsArray_' + id].push(eval(objStr));
+            window['defaultValuesArray_' + id].push(ctrl.value);
+        }
+    }
+
+    // 'Process' button
+    document.getElementById('process_' + id).onclick = function process() {
+        console.log(' Processing request ' + id + ' #' + (++count) + '...');
+
+        var btnCtrl = this;
+        btnCtrl.value = 'Processing...';
+        var resultCtrl = document.getElementById('results_' + id);
+        var defaultColor = resultCtrl.style.backgroundColor;
+        resultCtrl.style['background-color'] = '#d9d9d9';
+        resultCtrl.style['height'] = resultsDivHeight;
+        btnCtrl.disabled = true;
+
+        var request = new XMLHttpRequest();
+
+        var enc = getSelectedEncoding(id);
+        if (enc != null) {
+            request.overrideMimeType(enc);
+        }
+
+        request.addEventListener('load', function() {
+            document.getElementById('results_' + id).style['background-color'] = defaultColor;
+            document.getElementById('results_' + id).innerHTML = this.responseText;
+            btnCtrl.value = 'Process';
+            btnCtrl.disabled = false;
+            console.log(' Response for request ' + id + ' #' + count + ' received.');
+            document.getElementById('tests_' + id).focus();
+        });
+
+        var url = document.URL;
+
+        var requestStr = '';
+
+        for (var i = 0; i < queryStrArr.length; i++) {
+            if (queryStrArr[i].eval != undefined) {
+                var value = window['controlsArray_' + id][Math.floor(i / 2)].value;
+                requestStr += queryStrArr[i].eval.startsWith('unicodeToWin1251_UrlEncoded(') ? unicodeToWin1251_UrlEncoded(value) : value;
+            }
+            else {
+                requestStr += queryStrArr[i];
+            }
+        }
+
+        request.open('POST', url);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        try {
+            request.send(requestStr);
+            console.log(' Request ' + id + ' #' + count + ' sended.');
+        }
+        catch (exception) {
+            console.log('Exception while sending request.');
+        }
+    }
+
+    // 'Clear' button
+    document.getElementById('clear_' + id).onclick = function() {
+        var resultCtrl = document.getElementById('results_' + id);
+        resultCtrl.innerHTML = resultsDefaults;
+        resultCtrl.style['height'] = '0';
+    }
+};
+
+
+//
+// ** Helper functions
+//
+
+function getSelectedEncoding(id) {
+    var encodings = document.getElementsByName('encoding_' + id);
+
+    for (var r in encodings) {
+        if (encodings[r].checked && encodings[r].value != 'Default') {
+            return encodings[r].value;
+        }
+    }
+
+    return null;
+};
+
+window.setTestCaseFields = function (id, direction, override) {
+    var textArea = document.getElementById('tests_' + id);
+
+    var lineStart = getSelectionStartLine(textArea);
+    var linesCount = getLinesInTextarea(textArea);
+
+    if (direction != undefined) {
+        if (direction == 'next') {
+            lineStart++;
+            if (lineStart > linesCount) {
+                if (override) {
+                    lineStart = 1;
+                }
+                else {
+                    lineStart--;
+                }
+            }
+        }
+        else if (direction == 'prev') {
+            lineStart--;
+            if (lineStart < 1) {
+                if (override) {
+                    lineStart = linesCount;
+                }
+                else {
+                    lineStart++;
+                }
+            }
+        }
+    }
+
+    function processTestCase(text) {
+        resetFields(id);
+
+        var fields = text.split(', ');
+
+        for (var i = 0; i < fields.length; i++) {
+            var index = fields[i].indexOf(':');
+            var n = parseInt(fields[i].substring(0, index));
+            var s = fields[i].substring(index + 1);
+            window['controlsArray_' + id][n].value = s;
+        }
+    }
+
+    selectTextareaLine(textArea, lineStart);
+
+    var selectedStr = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
+
+    processTestCase(selectedStr);
+
+    textArea.focus();
+};
+
+window.resetFields = function (id) {
+        for (var i = 0; i < window['defaultValuesArray_' + id].length; i++) {
+            window['controlsArray_' + id][i].value = window['defaultValuesArray_' + id][i];
+        }
+};
+
+
+//
+// ** Query Strings
+//
+
+// ipn=&acc_type=&client_type=&test_sp=GET_CLIENTINFO
+// client_id=&client_type=&acc_type=&test_sp=GET_CLIENTINFO_FULL
+// client_id=&acc_type=&client_type=&test_sp=GET_PRODUCTLIST
+// account_id=&system_info=&test_sp=GET_ACCOUNTINFO
+// account_id=&system_info=&test_sp=GET_LASTCASHRECEIPT
+// account_id=&system_info=&test_sp=GET_ACCOUNTLIST
+// account_id=&test_sp=GET_TRUSTINFO
+// account_id=&date_from=&date_to=&system_info=&test_sp=GET_ACCOUNTABSTRACT
+// account_id=&system_info=&test_sp=GET_INTERESTRATE
+// account_id=&client_type=&test_sp=GET_STANDORDERS
+// account_id=&system_info=&test_sp=GET_REPAYMENT
+// account_id=&date_from=&date_to=&system_info=&test_sp=GET_DEBTABSTRACT
+// account_id=&test_sp=GET_DEBTWORKOUT
+// account_id=&test_sp=GET_PARTIALTRANSFER
+// account_id=&test_sp=GET_GUARANTOR
+// account_id=&system_info=&test_sp=GET_PLEDGE
+
+
+//
+// ** Configuration
+//
+
+// Use C:\Users\username\Desktop\Desktop\QAT\QAT-3158\Config Helper.html for auto building next settings calls, using Query Strings above
+
+                              //            html        body        form        input
+                              // document.children[0].children[1].children[0].children[0]
+
+appendExtension(1, 'GET_CLIENTINFO',
+                 ['ipn=', {eval: "document.children[0].children[1].children[0].children[0].value"},
+                  '&acc_type=', {eval: "document.children[0].children[1].children[0].children[2].value"},
+                  '&client_type=', {eval: "document.children[0].children[1].children[0].children[4].value"},
+                  '&test_sp=GET_CLIENTINFO'],
+                 ["text/plain; charset=windows-1251", "text/plain; charset=utf-8"],
+                 0, true, { cookieSuffix: '2' });
+
+appendExtension(4, 'GET_CLIENTINFO_FULL',
+                 ['client_id=', {eval: "document.children[0].children[1].children[3].children[0].value"},
+                  '&client_type=', {eval: "document.children[0].children[1].children[3].children[2].value"},
+                  '&acc_type=', {eval: "document.children[0].children[1].children[3].children[4].value"},
+                  '&test_sp=GET_CLIENTINFO_FULL'],
+                 ["text/plain; charset=windows-1251", "text/plain; charset=utf-8"],
+                 0, true);
+
+appendExtension(7, 'GET_PRODUCTLIST',
+                 ['client_id=', {eval: "document.children[0].children[1].children[6].children[0].value"},
+                  '&acc_type=', {eval: "document.children[0].children[1].children[6].children[2].value"},
+                  '&client_type=', {eval: "document.children[0].children[1].children[6].children[4].value"},
+                  '&test_sp=GET_PRODUCTLIST'],
+                 ["text/plain; charset=windows-1251", "text/plain; charset=utf-8"],
+                 0, true);
+
+// ...
+
+//
+// ** Change style
+// https://davidwalsh.name/add-rules-stylesheets
+//
+
+(function() {
+    var sheet = (function() {
+        // Create the <style> tag
+        var style = document.createElement("style");
+
+        // Add a media (and/or media query) here if you'd like!
+        // style.setAttribute("media", "screen")
+        // style.setAttribute("media", "only screen and (max-width : 1024px)")
+
+        // WebKit hack :(
+        style.appendChild(document.createTextNode(""));
+
+        // Add the <style> element to the page
+        document.head.appendChild(style);
+
+        return style.sheet;
+    })();
+
+    function addCSSRule(sheet, selector, rules, index) {
+        if("insertRule" in sheet) {
+            sheet.insertRule(selector + "{" + rules + "}", index);
+        }
+        else if("addRule" in sheet) {
+            sheet.addRule(selector, rules, index);
+        }
+    }
+
+    sheet.insertRule("body { background-color: " + bodyColor + "; }", 0);
+    sheet.insertRule("form { margin-top: 10px; margin-bottom: 0; }", 0);
+    sheet.insertRule("div { background-color: " + divColor + "; padding: 1px 3px 2px 3px; }", 0);
+})();
+
+
+
+// ==UserScript==
+// @name        Select Without Tail
+// @namespace   utils
+// @include     https://help.github.com/*
+// @include     https://github.com/*
+// @version     1
+// @grant       none
+// ==/UserScript==
+
+// @require https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js
+
+$('body').dblclick(function() {
+  var sel = window.getSelection();
+  var range = sel.getRangeAt(0);
+  var selTxt = range.toString();
+  
+  if (selTxt === '') {
+    return;
+  }
+  
+  var start = range.startOffset;
+  var end = range.endOffset;
+  while (selTxt[end - start - 1] == ' '
+         || selTxt[end - start - 1] == '\t') {
+    end--;
+  }
+  
+  var node = sel.focusNode;
+  range.setEnd(node, end);
+});
+
+
+
+// ==UserScript==
+// @name        SmartHide
+// @namespace   SmartHide
+// @include     http://nl.smarthide.com*
+// @version     1
+// @grant       none
+// ==/UserScript==
+
+window.onload = function() {
+  document.title = "OOP Principles";
+  
+    var st1 = document.createElement('style');
+    st1.innerHTML = '#logoSm a { background-image: url(""); display: block; height: 100px; width: 130px; }';
+    document.getElementsByTagName('head')[0].appendChild(st1);
+    
+    //div.children[0].children[0].children[0].children[0].style.visibility = "hidden";
+    //div.children[2].style.visibility = "hidden";
+}
+
+
+
+// ==UserScript==
+// @name        Department Mebmers Info
+// @namespace   NNN
+// @include     http://www/ua/phone_list.html*
+// @version     1
+// @grant       none
+// @require     ..\scripts.library.js
+// ==/UserScript==
+
+var replaceCookiesOrigin = ';';
+var replaceCookiesRE = new RegExp(replaceCookiesOrigin, 'g');
+var replaceCookiesStr = '###';
+var replaceCookiesBackRE = new RegExp(replaceCookiesStr, 'g');
+
+window.process = function () {
+    var rePattern = document.getElementById('regexp').value;
+    var reFlags = document.getElementById('flags').value;
+    var resultsPattern = document.getElementById('resultsPattern').value;
+
+    var RE = new RegExp(rePattern, reFlags);
+
+    var input = document.getElementById('input').value;
+
+    var resultsCtrl = document.getElementById('results');
+
+    resultsCtrl.value = '';
+
+    var count = 0;
+    var resultsStr = '';
+
+    var match;
+    while ((match = RE.exec(input)) != null) {
+        resultsStr += eval(resultsPattern) + '\n';
+        count++;
+    }
+
+    if (count == 0) {
+        resultsCtrl.value = 'No matches...';
+    }
+    else {
+        resultsCtrl.value = resultsStr;
+    }
+}
+
+window.saveSet = function (readFromCookies, ID) {
+    if (window.regularExpressionsPluginSetsArray == undefined) {
+        window.regularExpressionsPluginSetsArray = [];
+    }
+
+    if (!readFromCookies) {
+        var id = 'regularExpressionsPluginSets' + window.regularExpressionsPluginSetsArray.length;
+    }
+    else {
+        var id = 'regularExpressionsPluginSets' + ID;
+    }
+
+    var radio = document.createElement('input');
+    radio.setAttribute('type', 'radio');
+    radio.setAttribute('id', id);
+    radio.setAttribute('name', 'regularExpressionsPluginSets');
+    radio.addEventListener('click', window.selectSet = function (event) {
+        var index = parseInt(event.target.id.substring('regularExpressionsPluginSets'.length));
+        console.log(index + ' set selected');
+
+        document.getElementById('regexp').value = window.regularExpressionsPluginSetsArray[index].re;
+        document.getElementById('resultsPattern').value = window.regularExpressionsPluginSetsArray[index].resPatt;
+    });
+
+    var label = document.createElement('label');
+    label.setAttribute('for', 'regularExpressionsPluginSets' + window.regularExpressionsPluginSetsArray.length);
+    label.innerText = (!readFromCookies) ? regularExpressionsPluginSetsArray.length : ID;
+
+    document.getElementById('regularExpressionsPluginSets').appendChild(radio);
+    document.getElementById('regularExpressionsPluginSets').appendChild(label);
+
+    if (!readFromCookies) {
+        var re = document.getElementById('regexp').value;
+        var resPatt = document.getElementById('resultsPattern').value;
+
+        regularExpressionsPluginSetsArray.push({re: re, resPatt: resPatt});
+
+        var cookieStr = JSON.stringify(regularExpressionsPluginSetsArray);
+        cookieStr = cookieStr.replace(replaceCookiesRE, replaceCookiesStr);
+
+        setCookie('regularExpressionsPlugin', cookieStr, 1000);
+    }
+}
+
+window.getSetsFromCookies = function () {
+    console.log(' ');
+    
+    var cookie = getCookie('regularExpressionsPlugin');
+    
+    if (cookie == '') {
+        return;
+    }
+    
+    window.regularExpressionsPluginSetsArray = JSON.parse(cookie.replace(replaceCookiesBackRE, replaceCookiesOrigin));
+    
+    for (var i = 0; i < regularExpressionsPluginSetsArray.length; i++) {
+        document.getElementById('regexp').value = regularExpressionsPluginSetsArray[i].re;
+        document.getElementById('resultsPattern').value = regularExpressionsPluginSetsArray[i].resPatt;
+        saveSet(true, i);
+    }
+}
+
+window.getSource = function () {
+  document.getElementById('input').value = document.body.innerHTML;
+}
+
+var div = document.createElement('div');
+div.setAttribute('id', 'regularExpressionsPlugin');
+div.setAttribute('style', 'border: 2px solid green; padding: 5px; margin: 2px;');
+
+var divBtn = document.createElement('div');
+divBtn.innerHTML = '<button onclick="getSource()">Get page source</button>';
+
+div.appendChild(divBtn);
+
+var divRegularExpressions = document.createElement('div');
+divRegularExpressions.innerHTML = "    <p class='regularExpressionsPluginP'>Input:</p>\
+    <textarea id='input' style='width: 75%; height: 100px;'></textarea>\
+\
+    <p class='regularExpressionsPluginP'>Regular expression:</p>\
+    <textarea id='regexp' style='width: 75%; height: 22px;'><td><b>(.*?)</b>( .*?)<br>(?:<a href=\"mailto:(.*?@.*?)\">)?.*\n\s*<td>(.*?)</td></textarea>\
+\
+    <p class='regularExpressionsPluginP'>Flags:</p>\
+    <input type=text id='flags' style='width: 75%; height: 22px;' value='g'></textarea>\
+\
+    <p class='regularExpressionsPluginP'>Show results like this (use match[index]):</p>\
+    <textarea id='resultsPattern' style='width: 75%; height: 22px;'>match[1] + match[2] + '\\t' + match[3] + '\\t' + match[4]</textarea>\
+\
+    <div id='regularExpressionsPluginSets'>\
+        <button onclick='process()' style='font-weight: bold;'>Process</button>\
+        <button onclick='saveSet(false)' style='color: red;'>Save set</button>\
+    </div>\
+\
+    <p class='regularExpressionsPluginP'>Matches:</p>\
+    <textarea id='results' style='width: 75%; height: 100px;'></textarea>";
+
+div.appendChild(divRegularExpressions);
+
+document.body.appendChild(div);
+
+var style = document.createElement('style');
+style.innerHTML = '\
+    .regularExpressionsPluginP {\
+        margin: 0;\
+        font-weight: bold;\
+    }';
+
+document.head.appendChild(style);
+
+getSetsFromCookies();
+
+
+
+// ==UserScript==
+// @name        MSDN Links
+// @namespace   MSDN
+// @include     https://msdn.microsoft.com/*
+// @version     1
+// @grant       none
+// ==/UserScript==
+
+// console.log("*** Hello, world! ***")
+
+(function() {
+    try {
+        // http://stackoverflow.com/questions/12897446/greasemonkey-wait-for-page-to-load-before-executing-code-techniques
+        
+        window.addEventListener('load', function() {
+            var body = document.getElementsByTagName("body")[0];
+            var text = body.innerHTML;
+            
+            var linkRE = /https:\/\/msdn.microsoft.com\/en-us/g;
+            var replaceTo = 'https://msdn.microsoft.com';
+            
+            body.innerHTML = text.replace(linkRE, replaceTo);
+            
+            // console.log("Adding style...");
+            var sheet = document.createElement('style');
+            sheet.innerHTML = ".topic a:visited {color: #008f15;}";
+            document.body.appendChild(sheet);
+            // console.log("Style added.");
+        });
+    }
+    catch (exception) {
+        console.log("An error occured while running greasemonkey script.");
+    }
+})();

@@ -1,0 +1,44 @@
+// http://www.oxfordlearnersdictionaries.com/
+(function run(){
+  var count = 0;
+  
+  window.onload = function() {
+    console.log(' ** onload: ' + (++count));
+  }
+  
+  document.getElementsByClassName('webtop-g')[0].ondblclick = function(event) {
+    event.stopPropagation();
+  }
+  
+  //$('.webtop-g').eq(0).dblclick(function(event) {
+  //  event.stopPropagation();
+  //});
+  
+})();
+
+
+
+// https://translate.google.com/
+window.onload = function(id) {
+    var src = document.getElementById(id);
+    if (src == null) {
+       return;
+    }
+
+    var clicks = 0;
+
+    src.onclick = function() {
+        if (clicks == 0) {
+            src.selectionStart = 0;
+            src.selectionEnd = this.textLength;
+            clicks = 1;
+        }
+        else {
+            clicks = 0;
+        }
+    }
+
+    src.onblur = function() {
+        clicks = 0;
+    }
+}('source');
