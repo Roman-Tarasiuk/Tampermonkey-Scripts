@@ -1237,3 +1237,42 @@ var wrapper = document.createElement('form');
 wrapper.setAttribute('id', 'formWrapId');
 el.parentNode.insertBefore(wrapper, el);
 wrapper.appendChild(el);
+
+
+
+// ==UserScript==
+// @name        StopWatch
+// @namespace   google
+// @include     https://www.google.com.ua/search?*q=stopwatch*
+// @version     1
+// @grant       none
+// ==/UserScript==
+
+var q;
+
+q = document.getElementById('searchform');
+q.parentNode.removeChild(q);
+
+q = document.getElementById('top_nav');
+q.parentNode.removeChild(q);
+
+q = document.getElementById('appbar');
+q.parentNode.removeChild(q);
+
+q = document.getElementsByClassName('srg')[0];
+q.parentNode.removeChild(q);
+
+q = document.getElementById('extrares');
+q.parentNode.removeChild(q);
+
+q = document.getElementById('foot');
+q.parentNode.removeChild(q);
+
+q = document.getElementById('footcnt');
+q.parentNode.removeChild(q);
+
+q = document.getElementById('ataw');
+q.parentNode.removeChild(q);
+
+q = document.getElementById('sfcnt');
+q.parentNode.removeChild(q);
