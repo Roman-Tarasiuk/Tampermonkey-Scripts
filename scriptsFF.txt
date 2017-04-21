@@ -1276,3 +1276,6 @@ q.parentNode.removeChild(q);
 
 q = document.getElementById('sfcnt');
 q.parentNode.removeChild(q);
+
+q = document.getElementById('center_col');
+q.style.width = '350px';
