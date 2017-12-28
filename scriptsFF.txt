@@ -1490,48 +1490,48 @@ $(document).ready((function(textInputId) {
 //
 window.onload = function() {
     var that = this;
-    
+
     initHelper();
-    
+
     // That is it. The next code is just details of implementation.
-    
+
     function initHelper() {
         if (!runInCurrentFrame(that)) {
             return;
         }
-        
+
         if (that.helperObject) {
             console.log('** helperObject already exists. Exit.');
             return;
         }
-        
+
         console.log('** The Helper just started!');
         console.log(that);
-        
+
         var div = document.createElement('div');
         div.className = 'helper';
         div.innerHTML = helperHTML();
-        
+
         document.getElementsByTagName('body')[0]
             .children[0].children[2].appendChild(div);
-        
+
         var style = document.createElement('style');
         style.innerHTML = helperStyle();
-        
+
         document.getElementsByTagName('head')[0].appendChild(style);
-        
+
         that.helperObject = helperObject();
     }
-    
+
     // Used in initHelper().
     function runInCurrentFrame(window) {
         if (window.name.startsWith('gadget')) {
             return false;
         }
-        
+
         return true;
     }
-    
+
     // Used in initHelper().
     function helperHTML() {
         return '\
@@ -1541,7 +1541,7 @@ window.onload = function() {
             <div><textarea id="helperResults" class="helper-results helper-width"></textarea></div>\
         ';
     }
-    
+
     // Used in initHelper().
     function helperStyle() {
         return '\
@@ -1549,6 +1549,7 @@ window.onload = function() {
                 background-color: #080;\
                 height: 250px;\
                 padding: 5px;\
+                margin: 3px;\
             }\
             .helper-width {\
                 width: calc(100% - 10px);\
@@ -1559,25 +1560,23 @@ window.onload = function() {
             }\
         ';
     }
-    
+
     // Used in initHelper().
     function helperObject() {
         return {
             loadInfo: function() {
-                var that = this;
-                
-                var url = this.getUrl();
+                var url = getUrl();
                 console.log('The URL: ' + url);
-                
-                this.showResults('Waiting for data...');
-                
+
+                showResults('Waiting for data...');
+
                 if (url != '') {
                     var xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function() {
                       if (this.readyState == 4 && this.status == 200) {
                         console.log('** Loaded data:');
                         console.log(this.responseText);
-                        that.showResults(that.processResults(this.responseText));
+                        showResults(processResults(this.responseText));
                       }
                       else {
                         console.log('** No data loaded (readyState: ' + this.readyState + ', status: ' + this.status + '):');
@@ -1590,17 +1589,82 @@ window.onload = function() {
                     xhttp.send();
                 }
                 else {
-                    this.showResults(this.processResults(document.documentElement.innerHTML));
+                    showResults(processResults(document.documentElement.innerHTML));
                 }
-            },
-            processResults: function(r) {
-                return r;
-            },
-            getUrl: function() {
-                return document.getElementById('helperURL').value;
-            },
-            showResults: function(text) {
-                document.getElementById('helperResults').value = text;
+
+                // Helper functions.
+
+                function processResults(r) {
+                    var result = '';
+
+                    console.log('** Fetching results...');
+
+                    result = tasksOfTheCertainKind(
+                        /(<li><a class=\"issue-link\")(?:.|\r*\n)*?\1/g,
+                        /data-issue-key=\"(.*?)\"/g,
+                        '"Super task"'
+                    );
+
+                    result += tasksOfTheCertainKind(
+                        /<table id=\"issuetable\".*?>(?:.|\r*\n)*?<div class=\"end-of-stable-message\">/g,
+                        /(?:<td class=\"stsummary\"><a class=\"issue-link\" data-issue-key=\"(.*?)\")|(?:<tr id=\".*?data-issuekey=\"(.*?)\" class=\"issuerow\">)/g,
+                        '"Sub task"'
+                    );
+
+                    result += tasksOfTheCertainKind(
+                        /<dl class=\"links-list(?:.*?)\">(?:.|\r?\n)*?<dt title=\"(.*)\">(?:.|\r?\n)*?<\/dl>/g,
+                        /<span title="(?:.|\r*\n)*?<a href=.*?>(.*)<\/a>(?:.|\r*\n)*?<\/span>/g,
+                        'm[1]'
+                    );
+
+                    console.log('** Results fetched.');
+
+                    function tasksOfTheCertainKind(groupRe, taskRe, expression) {
+                        var result = '';
+
+                        var m;
+                        var count = 0;
+                        while ((m = groupRe.exec(r)) != null && (++count) < 10) {
+                            // console.log('**');
+                            // console.log(m[0]);
+                            var tasks = getTasks(m[0], taskRe);
+                            for (var i = 0; i < tasks.length; i++) {
+                                result += eval(expression) + '\t' + tasks[i] + '\n';
+                            }
+                        }
+
+                        return result;
+                    }
+
+                    function getTasks(t, taskRe) {
+                        var result = [];
+                        var m;
+                        while ((m = taskRe.exec(t)) != null) {
+                            console.log('m:');
+                            console.log(m);
+                            pushResult(m[1] != undefined ? m[1] : m[2] != undefined ? m[2] : 'unknown', result);
+                        }
+
+                        function pushResult(r, results) {
+                            if (results.indexOf(r) == -1) {
+                                results.push(r);
+                            }
+                        }
+
+                        return result;
+                    }
+
+                    return result;
+                    // return r;
+                }
+
+                function getUrl() {
+                    return document.getElementById('helperURL').value;
+                }
+
+                function showResults(text) {
+                    document.getElementById('helperResults').value = text;
+                }
             }
         }
     }
