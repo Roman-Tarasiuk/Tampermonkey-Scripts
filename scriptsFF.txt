@@ -1669,3 +1669,199 @@ window.onload = function() {
         }
     }
 }
+
+
+//
+// Display a URL next to an anchor.
+//
+window.onload = function() {
+  console.log('** "Anchor\'s URL" script initialization...');
+  
+    // *************************************************
+    var that = this;
+
+    initHelper();
+
+    // That is it. The next code is just details of implementation.
+
+    function initHelper() {
+        if (!runInCurrentFrame(that)) {
+            return;
+        }
+
+        if (that.helperObject2) {
+            console.log('** helperObject already exists. Exit.');
+            return;
+        }
+
+        console.log('** The Helper just started!');
+        console.log(that);
+
+        var div = document.createElement('div');
+        div.className = 'helper';
+        div.innerHTML = helperHTML();
+
+        document.getElementsByTagName('body')[0]
+            .children[0].appendChild(div);
+
+        var style = document.createElement('style');
+        style.innerHTML = helperStyle();
+
+        document.getElementsByTagName('head')[0].appendChild(style);
+
+        that.helperObject = helperObject();
+    }
+
+    // Used in initHelper().
+    function runInCurrentFrame(window) {
+        if (window.name.startsWith('gadget')) {
+            return false;
+        }
+
+        return true;
+    }
+
+    // Used in initHelper().
+    function helperHTML() {
+        return '\
+            <div>The Helper</div>\
+            <div><button onclick="helperObject.toggleUrls()">Toggle all URLs</button></div>\
+        ';
+    }
+
+    // Used in initHelper().
+    function helperStyle() {
+        return '\
+            .helper {\
+                background-color: #080;\
+                padding: 5px;\
+                margin: 3px;\
+                left:110px;\
+                top: 890px;\
+                position: absolute;\
+            }\
+        ';
+    }
+    
+    // Used in initHelper().
+    function helperObject() {
+        var urlsAreShown = false;
+        var count = 0;
+
+        return {
+            toggleUrls: function() {
+                $('a').each(function() {
+                    addUrlSpan(this);
+                });
+                
+                count = 0;
+                console.log('Current state: ' + urlsAreShown);
+                if (urlsAreShown) {
+                    $('a').each(function(){
+                        toggleUrl(this, false);
+                        count++;
+                    });
+                    
+                    urlsAreShown = false;
+                }
+                else {
+                    $('a').each(function(){
+                        toggleUrl(this, true);
+                        count++;
+                    });
+                    
+                    urlsAreShown = true;
+                }
+                console.log('Toggled: ' + count + ' element(s).');
+            }
+        }
+    }
+    // *************************************************
+      
+  var maxCount = 2; // Or 3
+  
+  function insertAfter(newNode, referenceNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+  }
+  
+  function toggleUrl(element, state) {
+      if (!element.appendedObj) {
+          return;
+      }
+      
+      // Simple version.
+      // if (state != undefined) {
+      //     element.appendedObj.visible = !state;
+      // }
+      
+      // More sophisticated version.
+      // Do not toggle if all toggled by button.
+      if (state == undefined && element.appendedObj.toggledOn) {
+          return;
+      }
+      
+      if (state != undefined) {
+          element.appendedObj.visible = !state;
+          
+          if (state == true) {
+              element.appendedObj.toggledOn = true;
+          }
+          else {
+              element.appendedObj.toggledOn = false;
+          }
+      }
+      
+      //
+      
+      if (element.appendedObj.visible) {
+          //this.appendedObj.url.style.visibility = 'hidden';
+          element.appendedObj.url.style.display = 'none';
+          element.appendedObj.visible = false;
+      }
+      else {
+          //this.appendedObj.url.style.visibility = 'visible';
+          element.appendedObj.url.style.display = 'inline';
+          element.appendedObj.visible = true;
+      }
+  }
+  
+  function addUrlSpan(element) {
+      if (!element.appendedObj) {
+          try {
+              var urlSpan = document.createElement('span');
+              urlSpan.innerText = ' [' + element.attributes.href.value + ']';
+              //urlSpan.style.visibility = 'hidden';
+              urlSpan.style.display = 'none';
+              insertAfter(urlSpan, element);
+              
+              element.appendedObj = {};
+              element.appendedObj.url = urlSpan;
+              element.appendedObj.mouseOverCount = 2;
+              element.appendedObj.visible = false;
+          }
+          catch(err) {
+              console.log('** Error in addUrlSpan():');
+              console.log(element);
+              element.appendedObj = null;
+          }
+      }
+  }
+  
+  $('a').mouseover(function(){
+      if (!this.appendedObj) {
+          //console.log('1.');
+          addUrlSpan(this);
+      }
+      else if (this.appendedObj.mouseOverCount >= maxCount) {
+          //console.log('2.');
+          toggleUrl(this);
+          this.appendedObj.mouseOverCount = 1;
+      }
+      else {
+          //console.log('3.');
+          this.appendedObj.mouseOverCount++;
+      }
+  });
+  
+  console.log('** "Anchor\'s URL" script initialization complete.');
+}
