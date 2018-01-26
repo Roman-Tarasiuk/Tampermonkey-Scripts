@@ -1488,380 +1488,641 @@ $(document).ready((function(textInputId) {
 //
 // ** Template for embedding of new div with certain functionality.
 //
-window.onload = function() {
-    var that = this;
-
-    initHelper();
-
-    // That is it. The next code is just details of implementation.
-
-    function initHelper() {
-        if (!runInCurrentFrame(that)) {
-            return;
-        }
-
-        if (that.helperObject) {
-            console.log('** helperObject already exists. Exit.');
-            return;
-        }
-
-        console.log('** The Helper just started!');
-        console.log(that);
-
-        var div = document.createElement('div');
-        div.className = 'helper';
-        div.innerHTML = helperHTML();
-
-        document.getElementsByTagName('body')[0]
-            .children[0].children[2].appendChild(div);
-
-        var style = document.createElement('style');
-        style.innerHTML = helperStyle();
-
-        document.getElementsByTagName('head')[0].appendChild(style);
-
-        that.helperObject = helperObject();
-    }
-
-    // Used in initHelper().
-    function runInCurrentFrame(window) {
-        if (window.name.startsWith('gadget')) {
-            return false;
-        }
-
-        return true;
-    }
-
-    // Used in initHelper().
-    function helperHTML() {
-        return '\
-            <div>The Helper</div>\
-            <div><button onclick="helperObject.loadInfo()">Get info</button></div>\
-            <div><input id="helperURL" class="helper-width"></div>\
-            <div><textarea id="helperResults" class="helper-results helper-width"></textarea></div>\
-        ';
-    }
-
-    // Used in initHelper().
-    function helperStyle() {
-        return '\
-            .helper {\
-                background-color: #080;\
-                height: 250px;\
-                padding: 5px;\
-                margin: 3px;\
-            }\
-            .helper-width {\
-                width: calc(100% - 10px);\
-            }\
-            \
-            .helper-results {\
-                height: 170px;\
-            }\
-        ';
-    }
-
-    // Used in initHelper().
-    function helperObject() {
-        return {
-            loadInfo: function() {
-                var url = getUrl();
-                console.log('The URL: ' + url);
-
-                showResults('Waiting for data...');
-
-                if (url != '') {
-                    var xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function() {
-                      if (this.readyState == 4 && this.status == 200) {
-                        console.log('** Loaded data:');
-                        console.log(this.responseText);
-                        showResults(processResults(this.responseText));
-                      }
-                      else {
-                        console.log('** No data loaded (readyState: ' + this.readyState + ', status: ' + this.status + '):');
-                        //console.log(this.responseText);
-                      }
-                    };
-                    xhttp.withCredentials = true;
-                    xhttp.open("GET", url, true);
-                    xhttp.setRequestHeader("Content-type", "application/json");
-                    xhttp.send();
-                }
-                else {
-                    showResults(processResults(document.documentElement.innerHTML));
-                }
-
-                // Helper functions.
-
-                function processResults(r) {
-                    var result = '';
-
-                    console.log('** Fetching results...');
-
-                    result = tasksOfTheCertainKind(
-                        /(<li><a class=\"issue-link\")(?:.|\r*\n)*?\1/g,
-                        /data-issue-key=\"(.*?)\"/g,
-                        '"Super task"'
-                    );
-
-                    result += tasksOfTheCertainKind(
-                        /<table id=\"issuetable\".*?>(?:.|\r*\n)*?<div class=\"end-of-stable-message\">/g,
-                        /(?:<td class=\"stsummary\"><a class=\"issue-link\" data-issue-key=\"(.*?)\")|(?:<tr id=\".*?data-issuekey=\"(.*?)\" class=\"issuerow\">)/g,
-                        '"Sub task"'
-                    );
-
-                    result += tasksOfTheCertainKind(
-                        /<dl class=\"links-list(?:.*?)\">(?:.|\r?\n)*?<dt title=\"(.*)\">(?:.|\r?\n)*?<\/dl>/g,
-                        /<span title="(?:.|\r*\n)*?<a href=.*?>(.*)<\/a>(?:.|\r*\n)*?<\/span>/g,
-                        'm[1]'
-                    );
-
-                    console.log('** Results fetched.');
-
-                    function tasksOfTheCertainKind(groupRe, taskRe, expression) {
-                        var result = '';
-
-                        var m;
-                        var count = 0;
-                        while ((m = groupRe.exec(r)) != null && (++count) < 10) {
-                            // console.log('**');
-                            // console.log(m[0]);
-                            var tasks = getTasks(m[0], taskRe);
-                            for (var i = 0; i < tasks.length; i++) {
-                                result += eval(expression) + '\t' + tasks[i] + '\n';
-                            }
-                        }
-
-                        return result;
-                    }
-
-                    function getTasks(t, taskRe) {
-                        var result = [];
-                        var m;
-                        while ((m = taskRe.exec(t)) != null) {
-                            console.log('m:');
-                            console.log(m);
-                            pushResult(m[1] != undefined ? m[1] : m[2] != undefined ? m[2] : 'unknown', result);
-                        }
-
-                        function pushResult(r, results) {
-                            if (results.indexOf(r) == -1) {
-                                results.push(r);
-                            }
-                        }
-
-                        return result;
-                    }
-
-                    return result;
-                    // return r;
-                }
-
-                function getUrl() {
-                    return document.getElementById('helperURL').value;
-                }
-
-                function showResults(text) {
-                    document.getElementById('helperResults').value = text;
-                }
-            }
-        }
-    }
-}
+$ window.onload = function() {
+$     var that = this;
+$ 
+$     initHelper();
+$ 
+$     // That is it. The next code is just details of implementation.
+$ 
+$     function initHelper() {
+$         if (!runInCurrentFrame(that)) {
+$             return;
+$         }
+$ 
+$         if (that.helperObject) {
+$             console.log('** helperObject already exists. Exit.');
+$             return;
+$         }
+$ 
+$         console.log('** The Helper just started!');
+$         console.log(that);
+$ 
+$         var div = document.createElement('div');
+$         div.className = 'helper';
+$         div.innerHTML = helperHTML();
+$ 
+$         document.getElementsByTagName('body')[0]
+$             .children[0].children[2].appendChild(div);
+$ 
+$         var style = document.createElement('style');
+$         style.innerHTML = helperStyle();
+$ 
+$         document.getElementsByTagName('head')[0].appendChild(style);
+$ 
+$         that.helperObject = helperObject();
+$     }
+$ 
+$     // Used in initHelper().
+$     function runInCurrentFrame(window) {
+$         if (window.name.startsWith('gadget')) {
+$             return false;
+$         }
+$ 
+$         return true;
+$     }
+$ 
+$     // Used in initHelper().
+$     function helperHTML() {
+$         return '\
+$             <div>The Helper</div>\
+$             <div><button onclick="helperObject.loadInfo()">Get info</button></div>\
+$             <div><input id="helperURL" class="helper-width"></div>\
+$             <div><textarea id="helperResults" class="helper-results helper-width"></textarea></div>\
+$         ';
+$     }
+$ 
+$     // Used in initHelper().
+$     function helperStyle() {
+$         return '\
+$             .helper {\
+$                 background-color: #080;\
+$                 height: 250px;\
+$                 padding: 5px;\
+$                 margin: 3px;\
+$             }\
+$             .helper-width {\
+$                 width: calc(100% - 10px);\
+$             }\
+$             \
+$             .helper-results {\
+$                 height: 170px;\
+$             }\
+$         ';
+$     }
+$ 
+$     // Used in initHelper().
+$     function helperObject() {
+$         return {
+$             loadInfo: function() {
+$                 var url = getUrl();
+$                 console.log('The URL: ' + url);
+$ 
+$                 showResults('Waiting for data...');
+$ 
+$                 if (url != '') {
+$                     var xhttp = new XMLHttpRequest();
+$                     xhttp.onreadystatechange = function() {
+$                       if (this.readyState == 4 && this.status == 200) {
+$                         console.log('** Loaded data:');
+$                         console.log(this.responseText);
+$                         showResults(processResults(this.responseText));
+$                       }
+$                       else {
+$                         console.log('** No data loaded (readyState: ' + this.readyState + ', status: ' + this.status + '):');
+$                         //console.log(this.responseText);
+$                       }
+$                     };
+$                     xhttp.withCredentials = true;
+$                     xhttp.open("GET", url, true);
+$                     xhttp.setRequestHeader("Content-type", "application/json");
+$                     xhttp.send();
+$                 }
+$                 else {
+$                     showResults(processResults(document.documentElement.innerHTML));
+$                 }
+$ 
+$                 // Helper functions.
+$ 
+$                 function processResults(r) {
+$                     var result = '';
+$ 
+$                     console.log('** Fetching results...');
+$ 
+$                     result = tasksOfTheCertainKind(
+$                         /(<li><a class=\"issue-link\")(?:.|\r*\n)*?\1/g,
+$                         /data-issue-key=\"(.*?)\"/g,
+$                         '"Super task"'
+$                     );
+$ 
+$                     result += tasksOfTheCertainKind(
+$                         /<table id=\"issuetable\".*?>(?:.|\r*\n)*?<div class=\"end-of-stable-message\">/g,
+$                         /(?:<td class=\"stsummary\"><a class=\"issue-link\" data-issue-key=\"(.*?)\")|(?:<tr id=\".*?data-issuekey=\"(.*?)\" class=\"issuerow\">)/g,
+$                         '"Sub task"'
+$                     );
+$ 
+$                     result += tasksOfTheCertainKind(
+$                         /<dl class=\"links-list(?:.*?)\">(?:.|\r?\n)*?<dt title=\"(.*)\">(?:.|\r?\n)*?<\/dl>/g,
+$                         /<span title="(?:.|\r*\n)*?<a href=.*?>(.*)<\/a>(?:.|\r*\n)*?<\/span>/g,
+$                         'm[1]'
+$                     );
+$ 
+$                     console.log('** Results fetched.');
+$ 
+$                     function tasksOfTheCertainKind(groupRe, taskRe, expression) {
+$                         var result = '';
+$ 
+$                         var m;
+$                         var count = 0;
+$                         while ((m = groupRe.exec(r)) != null && (++count) < 10) {
+$                             // console.log('**');
+$                             // console.log(m[0]);
+$                             var tasks = getTasks(m[0], taskRe);
+$                             for (var i = 0; i < tasks.length; i++) {
+$                                 result += eval(expression) + '\t' + tasks[i] + '\n';
+$                             }
+$                         }
+$ 
+$                         return result;
+$                     }
+$ 
+$                     function getTasks(t, taskRe) {
+$                         var result = [];
+$                         var m;
+$                         while ((m = taskRe.exec(t)) != null) {
+$                             console.log('m:');
+$                             console.log(m);
+$                             pushResult(m[1] != undefined ? m[1] : m[2] != undefined ? m[2] : 'unknown', result);
+$                         }
+$ 
+$                         function pushResult(r, results) {
+$                             if (results.indexOf(r) == -1) {
+$                                 results.push(r);
+$                             }
+$                         }
+$ 
+$                         return result;
+$                     }
+$ 
+$                     return result;
+$                     // return r;
+$                 }
+$ 
+$                 function getUrl() {
+$                     return document.getElementById('helperURL').value;
+$                 }
+$ 
+$                 function showResults(text) {
+$                     document.getElementById('helperResults').value = text;
+$                 }
+$             }
+$         }
+$     }
+$ }
 
 
 //
-// Display a URL next to an anchor.
+// Version with separate event initialization
 //
-window.onload = function() {
-  console.log('** "Anchor\'s URL" script initialization...');
-  
-    // *************************************************
-    var that = this;
++ window.onload = function() {
++     var that = {};
++ 
++     initHelper();
++ 
++     // That is it. The next code is just details of implementation.
++ 
++     function initHelper() {
++         console.log('** The Helper initialization...');
++         console.log(that);
++ 
++         if (!runInCurrentFrame(that)) {
++             console.log('** Cannot run in current frame. Exit.');
++             return;
++         }
++ 
++         if (that.helperObject) {
++             console.log('** helperObject already exists. Exit.');
++             return;
++         }
++ 
++         var div = document.createElement('div');
++         div.className = 'helper';
++         div.innerHTML = helperHTML();
++ 
++         document.getElementsByTagName('body')[0]
++             .children[0].children[2].appendChild(div);
++ 
++         var style = document.createElement('style');
++         style.innerHTML = helperStyle();
++ 
++         document.getElementsByTagName('head')[0].appendChild(style);
++ 
++         that.helperObject = helperObject();
++         helperEventHandlers();
++       
++         console.log('** The Helper initialization complete.');
++     }
++   
++     function helperEventHandlers() {
++       document.getElementById('helperButton').onclick = that.helperObject.loadInfo;
++     }
++ 
++     // Used in initHelper().
++     function runInCurrentFrame(window) {
++         if (window.name && window.name.startsWith('gadget')) {
++             return false;
++         }
++ 
++         return true;
++     }
++ 
++     // Used in initHelper().
++     function helperHTML() {
++         return '\
++             <div>The Helper</div>\
++             <div><button id="helperButton">Get info</button></div>\
++             <div><input id="helperURL" class="helper-width"></div>\
++             <div><textarea id="helperResults" class="helper-results helper-width"></textarea></div>\
++         ';
++     }
++ 
++     // Used in initHelper().
++     function helperStyle() {
++         return '\
++             .helper {\
++                 background-color: #080;\
++                 height: 250px;\
++                 padding: 5px;\
++                 margin: 3px;\
++             }\
++             .helper-width {\
++                 width: calc(100% - 10px);\
++             }\
++             \
++             .helper-results {\
++                 height: 170px;\
++             }\
++         ';
++     }
++ 
++     // Used in initHelper().
++     function helperObject() {
++         return {
++             loadInfo: function() {
++                 var url;
++                 try {
++                 	url = getUrl();
++                 }
++                 catch(err) {
++                   console.log('** Cannot get the URL. Exit.');
++                   return;
++                 }
++                 console.log('The URL: ' + url);
++ 
++                 showResults('Waiting for data...');
++ 
++                 if (url != '') {
++                     var xhttp = new XMLHttpRequest();
++                     xhttp.onreadystatechange = function() {
++                       if (this.readyState == 4 && this.status == 200) {
++                         console.log('** Loaded data:');
++                         console.log(this.responseText);
++                         showResults(processResults(this.responseText));
++                       }
++                       else {
++                         console.log('** No data loaded (readyState: ' + this.readyState + ', status: ' + this.status + '):');
++                         //console.log(this.responseText);
++                       }
++                     };
++                     xhttp.withCredentials = true;
++                     xhttp.open("GET", url, true);
++                     xhttp.setRequestHeader("Content-type", "application/json");
++                     xhttp.send();
++                 }
++                 else {
++                     showResults(processResults(document.documentElement.innerHTML));
++                 }
++ 
++                 // Helper functions.
++ 
++                 function processResults(r) {
++                     var result = '';
++ 
++                     console.log('** Fetching results...');
++ 
++                     result = tasksOfTheCertainKind(
++                         /(<li><a class=\"issue-link\")(?:.|\r*\n)*?\1/g,
++                         /data-issue-key=\"(.*?)\"/g,
++                         '"Super task"'
++                     );
++ 
++                     result += tasksOfTheCertainKind(
++                         /<table id=\"issuetable\".*?>(?:.|\r*\n)*?<div class=\"end-of-stable-message\">/g,
++                         /(?:<td class=\"stsummary\"><a class=\"issue-link\" data-issue-key=\"(.*?)\")|(?:<tr id=\".*?data-issuekey=\"(.*?)\" class=\"issuerow\">)/g,
++                         '"Sub task"'
++                     );
++ 
++                     result += tasksOfTheCertainKind(
++                         /<dl class=\"links-list(?:.*?)\">(?:.|\r?\n)*?<dt title=\"(.*)\">(?:.|\r?\n)*?<\/dl>/g,
++                         /<span title="(?:.|\r*\n)*?<a href=.*?>(.*)<\/a>(?:.|\r*\n)*?<\/span>/g,
++                         'm[1]'
++                     );
++ 
++                     console.log('** Results fetched.');
++ 
++                     function tasksOfTheCertainKind(groupRe, taskRe, expression) {
++                         var result = '';
++ 
++                         var m;
++                         var count = 0;
++                         while ((m = groupRe.exec(r)) != null && (++count) < 10) {
++                             // console.log('**');
++                             // console.log(m[0]);
++                             var tasks = getTasks(m[0], taskRe);
++                             for (var i = 0; i < tasks.length; i++) {
++                                 result += eval(expression) + '\t' + tasks[i] + '\n';
++                             }
++                         }
++ 
++                         return result;
++                     }
++ 
++                     function getTasks(t, taskRe) {
++                         var result = [];
++                         var m;
++                         while ((m = taskRe.exec(t)) != null) {
++                             console.log('m:');
++                             console.log(m);
++                             pushResult(m[1] != undefined ? m[1] : m[2] != undefined ? m[2] : 'unknown', result);
++                         }
++ 
++                         function pushResult(r, results) {
++                             if (results.indexOf(r) == -1) {
++                                 results.push(r);
++                             }
++                         }
++ 
++                         return result;
++                     }
++ 
++                     return result;
++                     // return r;
++                 }
++ 
++                 function getUrl() {
++                     return document.getElementById('helperURL').value;
++                 }
++ 
++                 function showResults(text) {
++                     document.getElementById('helperResults').value = text;
++                 }
++             }
++         }
++     }
++ }
 
-    initHelper();
 
-    // That is it. The next code is just details of implementation.
+* //
+* // Display a URL next to an anchor.
+* //
+* window.onload = function() {
+*   console.log('** "Anchor\'s URL" script initialization...');
+*   
+*     // *************************************************
+*     var that = this;
+* 
+*     initHelper();
+* 
+*     // That is it. The next code is just details of implementation.
+* 
+*     function initHelper() {
+*         if (!runInCurrentFrame(that)) {
+*             return;
+*         }
+* 
+*         if (that.helperObject2) {
+*             console.log('** helperObject already exists. Exit.');
+*             return;
+*         }
+* 
+*         console.log('** The Helper just started!');
+*         console.log(that);
+* 
+*         var div = document.createElement('div');
+*         div.className = 'helper';
+*         div.innerHTML = helperHTML();
+* 
+*         document.getElementsByTagName('body')[0]
+*             .children[0].appendChild(div);
+* 
+*         var style = document.createElement('style');
+*         style.innerHTML = helperStyle();
+* 
+*         document.getElementsByTagName('head')[0].appendChild(style);
+* 
+*         that.helperObject = helperObject();
+*     }
+* 
+*     // Used in initHelper().
+*     function runInCurrentFrame(window) {
+*         if (window.name.startsWith('gadget')) {
+*             return false;
+*         }
+* 
+*         return true;
+*     }
+* 
+*     // Used in initHelper().
+*     function helperHTML() {
+*         return '\
+*             <div>The Helper</div>\
+*             <div><button onclick="helperObject.toggleUrls()">Toggle all URLs</button></div>\
+*         ';
+*     }
+* 
+*     // Used in initHelper().
+*     function helperStyle() {
+*         return '\
+*             .helper {\
+*                 background-color: #080;\
+*                 padding: 5px;\
+*                 margin: 3px;\
+*                 left:110px;\
+*                 top: 890px;\
+*                 position: absolute;\
+*             }\
+*         ';
+*     }
+*     
+*     // Used in initHelper().
+*     function helperObject() {
+*         var urlsAreShown = false;
+*         var count = 0;
+* 
+*         return {
+*             toggleUrls: function() {
+*                 $('a').each(function() {
+*                     addUrlSpan(this);
+*                 });
+*                 
+*                 count = 0;
+*                 console.log('Current state: ' + urlsAreShown);
+*                 if (urlsAreShown) {
+*                     $('a').each(function(){
+*                         toggleUrl(this, false);
+*                         count++;
+*                     });
+*                     
+*                     urlsAreShown = false;
+*                 }
+*                 else {
+*                     $('a').each(function(){
+*                         toggleUrl(this, true);
+*                         count++;
+*                     });
+*                     
+*                     urlsAreShown = true;
+*                 }
+*                 console.log('Toggled: ' + count + ' element(s).');
+*             }
+*         }
+*     }
+*     // *************************************************
+*       
+*   var maxCount = 2; // Or 3
+*   
+*   function insertAfter(newNode, referenceNode) {
+*     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+*   }
+*   
+*   function toggleUrl(element, state) {
+*       if (!element.appendedObj) {
+*           return;
+*       }
+*       
+*       // Simple version.
+*       // if (state != undefined) {
+*       //     element.appendedObj.visible = !state;
+*       // }
+*       
+*       // More sophisticated version.
+*       // Do not toggle if all toggled by button.
+*       if (state == undefined && element.appendedObj.toggledOn) {
+*           return;
+*       }
+*       
+*       if (state != undefined) {
+*           element.appendedObj.visible = !state;
+*           
+*           if (state == true) {
+*               element.appendedObj.toggledOn = true;
+*           }
+*           else {
+*               element.appendedObj.toggledOn = false;
+*           }
+*       }
+*       
+*       //
+*       
+*       if (element.appendedObj.visible) {
+*           //this.appendedObj.url.style.visibility = 'hidden';
+*           element.appendedObj.url.style.display = 'none';
+*           element.appendedObj.visible = false;
+*       }
+*       else {
+*           //this.appendedObj.url.style.visibility = 'visible';
+*           element.appendedObj.url.style.display = 'inline';
+*           element.appendedObj.visible = true;
+*       }
+*   }
+*   
+*   function addUrlSpan(element) {
+*       if (!element.appendedObj) {
+*           try {
+*               var urlSpan = document.createElement('span');
+*               urlSpan.innerText = ' [' + element.attributes.href.value + ']';
+*               //urlSpan.style.visibility = 'hidden';
+*               urlSpan.style.display = 'none';
+*               insertAfter(urlSpan, element);
+*               
+*               element.appendedObj = {};
+*               element.appendedObj.url = urlSpan;
+*               element.appendedObj.mouseOverCount = 2;
+*               element.appendedObj.visible = false;
+*           }
+*           catch(err) {
+*               console.log('** Error in addUrlSpan():');
+*               console.log(element);
+*               element.appendedObj = null;
+*           }
+*       }
+*   }
+*   
+*   $('a').mouseover(function(){
+*       if (!this.appendedObj) {
+*           //console.log('1.');
+*           addUrlSpan(this);
+*       }
+*       else if (this.appendedObj.visible
+*             || (!this.appendedObj.visible && this.appendedObj.mouseOverCount >= maxCount)) {
+*           //console.log('2.');
+*           toggleUrl(this);
+*           this.appendedObj.mouseOverCount = 1;
+*       }
+*       else {
+*           //console.log('3.');
+*           this.appendedObj.mouseOverCount++;
+*       }
+*   });
+*   
+*   console.log('** "Anchor\'s URL" script initialization complete.');
+* }
 
-    function initHelper() {
-        if (!runInCurrentFrame(that)) {
-            return;
-        }
 
-        if (that.helperObject2) {
-            console.log('** helperObject already exists. Exit.');
-            return;
-        }
+// ==UserScript==
+// @name     BTT
+// @version  1
+// @grant    none
+// @include  https://www.csltd.com.ua/bt/*
+// @require  http://localhost:8080/scripts.jquery3.1.0.min.js
+// @require  http://localhost:8080/node_modules/jquery-autosize/jquery.autosize.min.js
+// Download the previous '@require' using 'npm install jquery-autosize'.
+// ==/UserScript==
 
-        console.log('** The Helper just started!');
-        console.log(that);
+String.prototype.lines = function() { return this.split(/\r*\n/); }
+String.prototype.lineCount = function() { return this.lines().length; }
 
-        var div = document.createElement('div');
-        div.className = 'helper';
-        div.innerHTML = helperHTML();
+//window.onload = function() {
+    console.log('** Applying better styles...');
 
-        document.getElementsByTagName('body')[0]
-            .children[0].appendChild(div);
+    var st2 = document.createElement('style');
+    st2.innerHTML =
+      'textarea {\
+        resize: vertical;\
+      }\
+      textarea, select, input, table {\
+        border: 0px !important;\
+        font-size: 10pt !important;\
+      }\
+      .tablecell {\
+        font-family : Verdana, sans-serif;\
+        font-size: 10pt;\
+        background-color : #F5F5F5;\
+        color: Black;\
+        border: 1pt solid lightgrey;\
+        padding: 3px;\
+      }\
+      a {\
+        font-family: Verdana, sans-serif;\
+        color: #333399;\
+        background-color: #F5F5F5;\
+        text-decoration: underline;\
+        border: 1pt solid #F5F5F5;\
+        font-size: 10pt !important;\
+      }';
+    document.head.appendChild(st2);
 
-        var style = document.createElement('style');
-        style.innerHTML = helperStyle();
+    $('textarea')
+      .attr('rows', '4')
+      .autosize()
+      .height(function(i, h) {
+        // Decreasing the size set by autosize(); toggle on the next 'if' for Google Chrome.
+        //if (this.value.lineCount() >= 4) {
+          $(this).height(h - 16);
+        //}
+      })
+      .removeAttr('readonly')
+      .css('resize', 'vertical');
 
-        document.getElementsByTagName('head')[0].appendChild(style);
-
-        that.helperObject = helperObject();
-    }
-
-    // Used in initHelper().
-    function runInCurrentFrame(window) {
-        if (window.name.startsWith('gadget')) {
-            return false;
-        }
-
-        return true;
-    }
-
-    // Used in initHelper().
-    function helperHTML() {
-        return '\
-            <div>The Helper</div>\
-            <div><button onclick="helperObject.toggleUrls()">Toggle all URLs</button></div>\
-        ';
-    }
-
-    // Used in initHelper().
-    function helperStyle() {
-        return '\
-            .helper {\
-                background-color: #080;\
-                padding: 5px;\
-                margin: 3px;\
-                left:110px;\
-                top: 890px;\
-                position: absolute;\
-            }\
-        ';
-    }
-    
-    // Used in initHelper().
-    function helperObject() {
-        var urlsAreShown = false;
-        var count = 0;
-
-        return {
-            toggleUrls: function() {
-                $('a').each(function() {
-                    addUrlSpan(this);
-                });
-                
-                count = 0;
-                console.log('Current state: ' + urlsAreShown);
-                if (urlsAreShown) {
-                    $('a').each(function(){
-                        toggleUrl(this, false);
-                        count++;
-                    });
-                    
-                    urlsAreShown = false;
-                }
-                else {
-                    $('a').each(function(){
-                        toggleUrl(this, true);
-                        count++;
-                    });
-                    
-                    urlsAreShown = true;
-                }
-                console.log('Toggled: ' + count + ' element(s).');
-            }
-        }
-    }
-    // *************************************************
-      
-  var maxCount = 2; // Or 3
-  
-  function insertAfter(newNode, referenceNode) {
-    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
-  }
-  
-  function toggleUrl(element, state) {
-      if (!element.appendedObj) {
-          return;
-      }
-      
-      // Simple version.
-      // if (state != undefined) {
-      //     element.appendedObj.visible = !state;
-      // }
-      
-      // More sophisticated version.
-      // Do not toggle if all toggled by button.
-      if (state == undefined && element.appendedObj.toggledOn) {
-          return;
-      }
-      
-      if (state != undefined) {
-          element.appendedObj.visible = !state;
-          
-          if (state == true) {
-              element.appendedObj.toggledOn = true;
-          }
-          else {
-              element.appendedObj.toggledOn = false;
-          }
-      }
-      
-      //
-      
-      if (element.appendedObj.visible) {
-          //this.appendedObj.url.style.visibility = 'hidden';
-          element.appendedObj.url.style.display = 'none';
-          element.appendedObj.visible = false;
-      }
-      else {
-          //this.appendedObj.url.style.visibility = 'visible';
-          element.appendedObj.url.style.display = 'inline';
-          element.appendedObj.visible = true;
-      }
-  }
-  
-  function addUrlSpan(element) {
-      if (!element.appendedObj) {
-          try {
-              var urlSpan = document.createElement('span');
-              urlSpan.innerText = ' [' + element.attributes.href.value + ']';
-              //urlSpan.style.visibility = 'hidden';
-              urlSpan.style.display = 'none';
-              insertAfter(urlSpan, element);
-              
-              element.appendedObj = {};
-              element.appendedObj.url = urlSpan;
-              element.appendedObj.mouseOverCount = 2;
-              element.appendedObj.visible = false;
-          }
-          catch(err) {
-              console.log('** Error in addUrlSpan():');
-              console.log(element);
-              element.appendedObj = null;
-          }
-      }
-  }
-  
-  $('a').mouseover(function(){
-      if (!this.appendedObj) {
-          //console.log('1.');
-          addUrlSpan(this);
-      }
-      else if (this.appendedObj.mouseOverCount >= maxCount) {
-          //console.log('2.');
-          toggleUrl(this);
-          this.appendedObj.mouseOverCount = 1;
-      }
-      else {
-          //console.log('3.');
-          this.appendedObj.mouseOverCount++;
-      }
-  });
-  
-  console.log('** "Anchor\'s URL" script initialization complete.');
-}
+    console.log('** Styles successfully aplied.');
+//};
