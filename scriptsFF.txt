@@ -2126,3 +2126,26 @@ String.prototype.lineCount = function() { return this.lines().length; }
 
     console.log('** Styles successfully aplied.');
 //};
+
+
+// ==UserScript==
+// @name     Name
+// @version  1
+// @include https://the.url
+// @grant GM.xmlHttpRequest
+// ==/UserScript==
+
+console.log('** Starting load bootstrap...');
+
+GM.xmlHttpRequest({
+  method: "GET",
+  url: "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
+  onload: function(response) {
+    var st2 = document.createElement('style');
+    st2.innerHTML = response.response;
+    document.head.appendChild(st2);
+    console.log('** Style aplied.');
+  }
+});
+
+console.log('** Success.');
