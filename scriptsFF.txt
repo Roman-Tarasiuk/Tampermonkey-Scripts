@@ -2149,3 +2149,136 @@ GM.xmlHttpRequest({
 });
 
 console.log('** Success.');
+
+
+$$$$$$$    jQuery
+$$$$$$$    +
+$$$$$$$    Autosize 4.0.0
+$$$$$$$    license: MIT
+$$$$$$$    http://www.jacklmoore.com/autosize
+$$$$$$$    https://github.com/jackmoore/autosize
+$$$$$$$  
+$$$$$$$  String.prototype.lines = function() { return this.split(/\r*\n/); }
+$$$$$$$  String.prototype.lineCount = function() { return this.lines().length; }
+$$$$$$$  
+$$$$$$$  function getCreationTime(str) {
+$$$$$$$    var re = /<TEXTAREA class=\"textareaR100\".*\r\n.*\r\n.*\r\n.*\r\n.*\r\n.*/g;
+$$$$$$$    var result = re.exec(str);
+$$$$$$$    var tmp;
+$$$$$$$    while ((tmp = re.exec(str)) != null) {
+$$$$$$$      result = tmp;
+$$$$$$$      console.log(result);
+$$$$$$$      console.log(result[0]);
+$$$$$$$    }
+$$$$$$$    
+$$$$$$$    var reCreation = /<br>(.*)<br>/g;
+$$$$$$$    result = reCreation.exec(result[0]);
+$$$$$$$    
+$$$$$$$    return result[1];
+$$$$$$$  }
+$$$$$$$  
+$$$$$$$  //window.onload = function() {
+$$$$$$$      console.log('** Applying better styles...');
+$$$$$$$  
+$$$$$$$      var st2 = document.createElement('style');
+$$$$$$$      st2.innerHTML =
+$$$$$$$        'textarea {\
+$$$$$$$          resize: vertical;\
+$$$$$$$        }\
+$$$$$$$        textarea, select, input, table {\
+$$$$$$$          border: 0px !important;\
+$$$$$$$          font-size: 10pt !important;\
+$$$$$$$        }\
+$$$$$$$        .tablecell {\
+$$$$$$$          font-family : Verdana, sans-serif;\
+$$$$$$$          font-size: 10pt;\
+$$$$$$$          background-color : #F5F5F5;\
+$$$$$$$          color: Black;\
+$$$$$$$          border: 1pt solid lightgrey;\
+$$$$$$$          padding: 3px;\
+$$$$$$$        }\
+$$$$$$$  			.task-open-btn {\
+$$$$$$$  				border: 1px solid #888 !important;\
+$$$$$$$  			}\
+$$$$$$$        a {\
+$$$$$$$          font-family: Verdana, sans-serif;\
+$$$$$$$          color: #333399;\
+$$$$$$$          background-color: #F5F5F5;\
+$$$$$$$          text-decoration: underline;\
+$$$$$$$          border: 1pt solid #F5F5F5;\
+$$$$$$$          font-size: 10pt !important;\
+$$$$$$$        }';
+$$$$$$$      document.head.appendChild(st2);
+$$$$$$$  
+$$$$$$$      // 1.
+$$$$$$$      $('textarea').attr('rows', '4');
+$$$$$$$      // 2.
+$$$$$$$      autosize($('textarea'));
+$$$$$$$      // 3.
+$$$$$$$      console.log('** 3');
+$$$$$$$      $('textarea')
+$$$$$$$        .removeAttr('readonly')
+$$$$$$$        .css('resize', 'vertical');
+$$$$$$$      console.log('** OK');
+$$$$$$$  
+$$$$$$$  		//
+$$$$$$$  		var issNumInput = document.getElementsByName('issue_no')[0];
+$$$$$$$  		if (issNumInput != null) {
+$$$$$$$        issNumInput.style.float = 'left';
+$$$$$$$        issNumInput.style.marginLeft = '30px';
+$$$$$$$        issNumInput.style.paddingRight = '3px';
+$$$$$$$        var focused = false;
+$$$$$$$        issNumInput.addEventListener('focus', function(){
+$$$$$$$          if (!focused) {
+$$$$$$$          	this.select();
+$$$$$$$            focused = true;
+$$$$$$$          }
+$$$$$$$        });
+$$$$$$$        issNumInput.addEventListener('blur', function(){
+$$$$$$$          focused = false;
+$$$$$$$        });
+$$$$$$$        
+$$$$$$$        var td = issNumInput.parentNode;
+$$$$$$$        td.style.backgroundColor = '#99d9ea';
+$$$$$$$        
+$$$$$$$        var btn = issNumInput.previousSibling.previousSibling;
+$$$$$$$        btn.value = 'Open >>';
+$$$$$$$        btn.classList.add('task-open-btn');
+$$$$$$$        btn.style.marginRight = '10px';
+$$$$$$$        btn.style.height = '19px';
+$$$$$$$        btn.style.width = '80px';
+$$$$$$$        
+$$$$$$$        var textArea = document.createElement('textarea');
+$$$$$$$        document.body.insertBefore(textArea, document.body.lastChild);
+$$$$$$$        
+$$$$$$$        var newBtn = document.createElement('input');
+$$$$$$$        newBtn.type = 'button';
+$$$$$$$        newBtn.classList.add('bluebuttonsmall');
+$$$$$$$        newBtn.innerText = 'Get';
+$$$$$$$        btn.parentNode.insertBefore(newBtn, btn);
+$$$$$$$        newBtn.addEventListener('click', function() {
+$$$$$$$          var xhr = new XMLHttpRequest();
+$$$$$$$          xhr.open('POST', 'http://www...');
+$$$$$$$          xhr.withCredentials = true;
+$$$$$$$          xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+$$$$$$$          xhr.responseType = "arraybuffer";
+$$$$$$$          xhr.onreadystatechange = function() { //Call a function when the state changes.
+$$$$$$$              if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+$$$$$$$                console.log('Start decoding...');
+$$$$$$$                const contenttype = xhr.getResponseHeader("content-type");
+$$$$$$$                const charset = 'windows-1251';
+$$$$$$$                const dataView = new DataView(xhr.response);
+$$$$$$$                const decoder = new TextDecoder(charset);
+$$$$$$$                var decodedStr = decoder.decode(dataView);
+$$$$$$$                //textArea.value = decoder.decode(dataView);
+$$$$$$$                textArea.value = getCreationTime(decodedStr);
+$$$$$$$                console.log('Yeho!');
+$$$$$$$              }
+$$$$$$$          }
+$$$$$$$  	      var taskId = issNumInput.value;
+$$$$$$$          xhr.send('issue_no=' + taskId + '&iss_per_page=0&h_link=issue_no&h_action=');
+$$$$$$$        });
+$$$$$$$      }
+$$$$$$$  
+$$$$$$$      console.log('** Styles successfully aplied.');
+$$$$$$$  //};
