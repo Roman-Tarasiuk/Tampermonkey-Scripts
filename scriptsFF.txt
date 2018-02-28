@@ -64,7 +64,7 @@ window.onload = function() { // In Google Chrome (cjs) run the next code outside
 
 (function(textInputId) {
     var clicks = 0;
-    
+
     $(textInputId).on('click', function() {
         if (clicks == 0) {
             this.selectionStart = 0;
@@ -75,7 +75,7 @@ window.onload = function() { // In Google Chrome (cjs) run the next code outside
             clicks = 0;
         }
     });
-    
+
     $(textInputId).on('blur', function() {
         clicks = 0;
     });
@@ -113,7 +113,7 @@ window.onload = function() {
 
 
 // var commitsIndicator = document.getElementsByClassName('numbers-summary')[0].children[0].children[0];
-// 
+//
 // commitsIndicator.style.color = "#f66"
 // commitsIndicator.style.fontSize = "1.3em";
 // commitsIndicator.style.fontWeight = "900"
@@ -138,7 +138,7 @@ function styleGithub() {
 
     element =
         document.getElementsByClassName('js-selected-navigation-item');
-    
+
     if (   element
         && element[3]
         && element[3].children) {
@@ -189,9 +189,9 @@ window.onload = function() {
   }
   else {
     console.log('************************************** not null **************************************');
-    
+
     var clicks = 0;
-    
+
     src.onclick = function() {
       if (clicks == 0) {
         src.selectionStart = 0;
@@ -202,7 +202,7 @@ window.onload = function() {
         clicks = 0;
       }
     }
-    
+
     src.onblur = function() {
       clicks = 0;
     }
@@ -274,17 +274,17 @@ window.onload = function(id) {
 
 window.onload = function() {
     var allLinks = document.getElementsByTagName('a');
-    
+
     function decorate(title, color) {
         var element = null;
-        
+
         for (var i = 0; i < allLinks.length; i++) {
            if (allLinks[i].text == title) {
                element = allLinks[i];
                break;
            }
         }
-        
+
         if (element != null) {
             element.text = '* ' + element.text;
             element.style.color = color;
@@ -293,18 +293,18 @@ window.onload = function() {
             element.style["text-decoration"] = 'underline';
         }
     }
-    
+
     decorate ('Телефонний довiдник', 'green');
     decorate ('Служба підтримки користувачів', 'red');
-    
+
     //
-    
+
     function appendStyle(style) {
         var st = document.createElement('style');
         st.innerHTML = style;
         document.getElementsByTagName('head')[0].appendChild(st);
     }
-    
+
     appendStyle('.menu_item:hover { color: #444; font-weight: normal; text-decoration: underline }');
     appendStyle('.menu_item {padding-left: 10px;}');
     appendStyle('body, td { color: black; font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif; font-size: 14px; }');
@@ -313,9 +313,9 @@ window.onload = function() {
     appendStyle('.book_link_item { font-size: 14px; }')
     appendStyle('.sign_path, .sign_path:hover { color: black; font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif; font-size: 14px; }');
     appendStyle(' .td_menu_item, .td_menu_item_icon { background-color: #fefc67; border-bottom: 1px solid #e1e1e1; color: black; }');
-    
+
     //
-    
+
     var a_news_header = document.getElementsByClassName('news_header');
     for (var i = 0; i < a_news_header.length; i++) {
         a_news_header[i].removeAttribute('style');
@@ -323,11 +323,11 @@ window.onload = function() {
 
     //
     // http://stackoverflow.com/questions/3387427/remove-element-by-id
-    
+
     Element.prototype.remove = function() {
         this.parentElement.removeChild(this);
     }
-    
+
     NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
         for(var i = this.length - 1; i >= 0; i--) {
             if(this[i] && this[i].parentElement) {
@@ -335,11 +335,11 @@ window.onload = function() {
             }
         }
     }
-    
+
     document.querySelectorAll('img[src="http://www/main/img/arr1.gif"]').remove();
-    
+
     //
-    
+
     (function(id) {
       var src = document.getElementById(id);
       if (src == null) {
@@ -380,39 +380,39 @@ window.onload = function() {
     var st1 = document.createElement('style');
     st1.innerHTML = '.activity-name { border-bottom: 1px dashed #aaa; color: #666; min-width: 150px; }';
     document.getElementsByTagName('head')[0].appendChild(st1);
-  
+
     var st2 = document.createElement('style');
     st2.innerHTML = '.activity-old-val, .activity-new-val { border-bottom: 1px dashed #aaa; min-width: 250px; }';
     document.getElementsByTagName('head')[0].appendChild(st2);
-    
+
     var st3 = document.createElement('style');
     st3.innerHTML = '::-moz-selection { color: black; background: #9bf; } ::selection { color: black; background: #9bf; }';
     document.getElementsByTagName('head')[0].appendChild(st3);
-    
+
     /*
     var st4 = document.createElement('style');
     st4.innerHTML = '.issue-data-block { border: 5px solid #ccc; padding: 10px; }';
     document.getElementsByTagName('head')[0].appendChild(st4);
     */
-    
+
     // Next code works, but approach, that is going below, is better
     //
     // var worklogcalc = document.getElementById('worklogcalk_link');
     // worklogcalc.style.fontWeight = 'bold';
     // worklogcalc.style.color = '#ddd';
     // worklogcalc.style.backgroundColor = '#222';
-    
+
     // http://stackoverflow.com/questions/11371550/change-hover-css-properties-with-javascript
     //
     var css = 'a#worklogcalk_link:hover, a#crowd_link:hover {color: #fff} a#worklogcalk_link, a#crowd_link {color: #66f; font-weight: bold;}';
     style = document.createElement('style');
-    
+
     if (style.styleSheet) {
         style.styleSheet.cssText = css;
     } else {
         style.appendChild(document.createTextNode(css));
     }
-    
+
     document.getElementsByTagName('head')[0].appendChild(style);
 }
 
@@ -519,11 +519,11 @@ function appendExtension(indexBefore, id, queryStrArr, encodings, defEncodingInd
         log('Error while inserting extension element.');
         return;
     }
-    
+
     var toCookiesRE = /\n/g;
     var cookieReplacementString = '@@@@';
     var fromCookiesRE = new RegExp(cookieReplacementString, 'g');
-    
+
     $('#' + 'tests_' + id).val(getCookie('#' + 'tests_' + id + ((additionalArgs != undefined) && (additionalArgs.cookieSuffix != undefined) ? additionalArgs.cookieSuffix : '')).replace(fromCookiesRE, '\n'));
 
     $('#' + 'tests_' + id).bind('input propertychange', function() {
@@ -531,7 +531,7 @@ function appendExtension(indexBefore, id, queryStrArr, encodings, defEncodingInd
             $('#' + 'tests_' + id).val().replace(toCookiesRE, cookieReplacementString),
             1000);
     });
-    
+
     var count = 0;
 
     //
@@ -800,18 +800,18 @@ $('body').dblclick(function() {
   var sel = window.getSelection();
   var range = sel.getRangeAt(0);
   var selTxt = range.toString();
-  
+
   if (selTxt === '') {
     return;
   }
-  
+
   var start = range.startOffset;
   var end = range.endOffset;
   while (selTxt[end - start - 1] == ' '
          || selTxt[end - start - 1] == '\t') {
     end--;
   }
-  
+
   var node = sel.focusNode;
   range.setEnd(node, end);
 });
@@ -828,11 +828,11 @@ $('body').dblclick(function() {
 
 window.onload = function() {
   document.title = "OOP Principles";
-  
+
     var st1 = document.createElement('style');
     st1.innerHTML = '#logoSm a { background-image: url(""); display: block; height: 100px; width: 130px; }';
     document.getElementsByTagName('head')[0].appendChild(st1);
-    
+
     //div.children[0].children[0].children[0].children[0].style.visibility = "hidden";
     //div.children[2].style.visibility = "hidden";
 }
@@ -929,15 +929,15 @@ window.saveSet = function (readFromCookies, ID) {
 
 window.getSetsFromCookies = function () {
     console.log(' ');
-    
+
     var cookie = getCookie('regularExpressionsPlugin');
-    
+
     if (cookie == '') {
         return;
     }
-    
+
     window.regularExpressionsPluginSetsArray = JSON.parse(cookie.replace(replaceCookiesBackRE, replaceCookiesOrigin));
-    
+
     for (var i = 0; i < regularExpressionsPluginSetsArray.length; i++) {
         document.getElementById('regexp').value = regularExpressionsPluginSetsArray[i].re;
         document.getElementById('resultsPattern').value = regularExpressionsPluginSetsArray[i].resPatt;
@@ -1009,16 +1009,16 @@ getSetsFromCookies();
 (function() {
     try {
         // http://stackoverflow.com/questions/12897446/greasemonkey-wait-for-page-to-load-before-executing-code-techniques
-        
+
         window.addEventListener('load', function() {
             var body = document.getElementsByTagName("body")[0];
             var text = body.innerHTML;
-            
+
             var linkRE = /https:\/\/msdn.microsoft.com\/en-us/g;
             var replaceTo = 'https://msdn.microsoft.com';
-            
+
             body.innerHTML = text.replace(linkRE, replaceTo);
-            
+
             // console.log("Adding style...");
             var sheet = document.createElement('style');
             sheet.innerHTML = ".topic a:visited {color: #008f15;}";
@@ -1097,15 +1097,15 @@ q.style.width = '350px';
 
 (function run(){
   var count = 0;
-  
+
   window.onload = function() {
     console.log(' ** onload: ' + (++count));
   }
-  
+
   $('.webtop-g').eq(0).dblclick(function(event) {
     event.stopPropagation();
   });
-  
+
 })();
 
 // Another version of next OALD see at OALD-Card github project
@@ -1420,7 +1420,7 @@ $(document).ready((function(textInputId) {
         }
 
         var result = {};
-       
+
         mainContent = mainContent[0];
 
         var clearRE = /(<span.+?>)|(<\/span>)/g;
@@ -1450,7 +1450,7 @@ $(document).ready((function(textInputId) {
         // Pronunciation
 
         console.log('** trying to get pronunciations...');
-        
+
         result.pronunciations = [];
 
         var tmp = mainContent;
@@ -1472,7 +1472,7 @@ $(document).ready((function(textInputId) {
                 console.log('**: ', country);
                 console.log('**: ', pr);
                 console.log('**: ', url);
-               
+
                 result.pronunciations[result.pronunciations.length] = {country: country, text: pr, audioUrl: url};
             }
         }
@@ -1490,48 +1490,48 @@ $(document).ready((function(textInputId) {
 //
 $ window.onload = function() {
 $     var that = this;
-$ 
+$
 $     initHelper();
-$ 
+$
 $     // That is it. The next code is just details of implementation.
-$ 
+$
 $     function initHelper() {
 $         if (!runInCurrentFrame(that)) {
 $             return;
 $         }
-$ 
+$
 $         if (that.helperObject) {
 $             console.log('** helperObject already exists. Exit.');
 $             return;
 $         }
-$ 
+$
 $         console.log('** The Helper just started!');
 $         console.log(that);
-$ 
+$
 $         var div = document.createElement('div');
 $         div.className = 'helper';
 $         div.innerHTML = helperHTML();
-$ 
+$
 $         document.getElementsByTagName('body')[0]
 $             .children[0].children[2].appendChild(div);
-$ 
+$
 $         var style = document.createElement('style');
 $         style.innerHTML = helperStyle();
-$ 
+$
 $         document.getElementsByTagName('head')[0].appendChild(style);
-$ 
+$
 $         that.helperObject = helperObject();
 $     }
-$ 
+$
 $     // Used in initHelper().
 $     function runInCurrentFrame(window) {
 $         if (window.name.startsWith('gadget')) {
 $             return false;
 $         }
-$ 
+$
 $         return true;
 $     }
-$ 
+$
 $     // Used in initHelper().
 $     function helperHTML() {
 $         return '\
@@ -1541,7 +1541,7 @@ $             <div><input id="helperURL" class="helper-width"></div>\
 $             <div><textarea id="helperResults" class="helper-results helper-width"></textarea></div>\
 $         ';
 $     }
-$ 
+$
 $     // Used in initHelper().
 $     function helperStyle() {
 $         return '\
@@ -1560,16 +1560,16 @@ $                 height: 170px;\
 $             }\
 $         ';
 $     }
-$ 
+$
 $     // Used in initHelper().
 $     function helperObject() {
 $         return {
 $             loadInfo: function() {
 $                 var url = getUrl();
 $                 console.log('The URL: ' + url);
-$ 
+$
 $                 showResults('Waiting for data...');
-$ 
+$
 $                 if (url != '') {
 $                     var xhttp = new XMLHttpRequest();
 $                     xhttp.onreadystatechange = function() {
@@ -1591,37 +1591,37 @@ $                 }
 $                 else {
 $                     showResults(processResults(document.documentElement.innerHTML));
 $                 }
-$ 
+$
 $                 // Helper functions.
-$ 
+$
 $                 function processResults(r) {
 $                     var result = '';
-$ 
+$
 $                     console.log('** Fetching results...');
-$ 
+$
 $                     result = tasksOfTheCertainKind(
 $                         /(<li><a class=\"issue-link\")(?:.|\r*\n)*?\1/g,
 $                         /data-issue-key=\"(.*?)\"/g,
 $                         '"Super task"'
 $                     );
-$ 
+$
 $                     result += tasksOfTheCertainKind(
 $                         /<table id=\"issuetable\".*?>(?:.|\r*\n)*?<div class=\"end-of-stable-message\">/g,
 $                         /(?:<td class=\"stsummary\"><a class=\"issue-link\" data-issue-key=\"(.*?)\")|(?:<tr id=\".*?data-issuekey=\"(.*?)\" class=\"issuerow\">)/g,
 $                         '"Sub task"'
 $                     );
-$ 
+$
 $                     result += tasksOfTheCertainKind(
 $                         /<dl class=\"links-list(?:.*?)\">(?:.|\r?\n)*?<dt title=\"(.*)\">(?:.|\r?\n)*?<\/dl>/g,
 $                         /<span title="(?:.|\r*\n)*?<a href=.*?>(.*)<\/a>(?:.|\r*\n)*?<\/span>/g,
 $                         'm[1]'
 $                     );
-$ 
+$
 $                     console.log('** Results fetched.');
-$ 
+$
 $                     function tasksOfTheCertainKind(groupRe, taskRe, expression) {
 $                         var result = '';
-$ 
+$
 $                         var m;
 $                         var count = 0;
 $                         while ((m = groupRe.exec(r)) != null && (++count) < 10) {
@@ -1632,10 +1632,10 @@ $                             for (var i = 0; i < tasks.length; i++) {
 $                                 result += eval(expression) + '\t' + tasks[i] + '\n';
 $                             }
 $                         }
-$ 
+$
 $                         return result;
 $                     }
-$ 
+$
 $                     function getTasks(t, taskRe) {
 $                         var result = [];
 $                         var m;
@@ -1644,24 +1644,24 @@ $                             console.log('m:');
 $                             console.log(m);
 $                             pushResult(m[1] != undefined ? m[1] : m[2] != undefined ? m[2] : 'unknown', result);
 $                         }
-$ 
+$
 $                         function pushResult(r, results) {
 $                             if (results.indexOf(r) == -1) {
 $                                 results.push(r);
 $                             }
 $                         }
-$ 
+$
 $                         return result;
 $                     }
-$ 
+$
 $                     return result;
 $                     // return r;
 $                 }
-$ 
+$
 $                 function getUrl() {
 $                     return document.getElementById('helperURL').value;
 $                 }
-$ 
+$
 $                 function showResults(text) {
 $                     document.getElementById('helperResults').value = text;
 $                 }
@@ -1676,56 +1676,56 @@ $ }
 //
 + window.onload = function() {
 +     var that = {};
-+ 
++
 +     initHelper();
-+ 
++
 +     // That is it. The next code is just details of implementation.
-+ 
++
 +     function initHelper() {
 +         console.log('** The Helper initialization...');
 +         console.log(that);
-+ 
++
 +         if (!runInCurrentFrame(that)) {
 +             console.log('** Cannot run in current frame. Exit.');
 +             return;
 +         }
-+ 
++
 +         if (that.helperObject) {
 +             console.log('** helperObject already exists. Exit.');
 +             return;
 +         }
-+ 
++
 +         var div = document.createElement('div');
 +         div.className = 'helper';
 +         div.innerHTML = helperHTML();
-+ 
++
 +         document.getElementsByTagName('body')[0]
 +             .children[0].children[2].appendChild(div);
-+ 
++
 +         var style = document.createElement('style');
 +         style.innerHTML = helperStyle();
-+ 
++
 +         document.getElementsByTagName('head')[0].appendChild(style);
-+ 
++
 +         that.helperObject = helperObject();
 +         helperEventHandlers();
-+       
++
 +         console.log('** The Helper initialization complete.');
 +     }
-+   
++
 +     function helperEventHandlers() {
 +       document.getElementById('helperButton').onclick = that.helperObject.loadInfo;
 +     }
-+ 
++
 +     // Used in initHelper().
 +     function runInCurrentFrame(window) {
 +         if (window.name && window.name.startsWith('gadget')) {
 +             return false;
 +         }
-+ 
++
 +         return true;
 +     }
-+ 
++
 +     // Used in initHelper().
 +     function helperHTML() {
 +         return '\
@@ -1735,7 +1735,7 @@ $ }
 +             <div><textarea id="helperResults" class="helper-results helper-width"></textarea></div>\
 +         ';
 +     }
-+ 
++
 +     // Used in initHelper().
 +     function helperStyle() {
 +         return '\
@@ -1754,7 +1754,7 @@ $ }
 +             }\
 +         ';
 +     }
-+ 
++
 +     // Used in initHelper().
 +     function helperObject() {
 +         return {
@@ -1768,9 +1768,9 @@ $ }
 +                   return;
 +                 }
 +                 console.log('The URL: ' + url);
-+ 
++
 +                 showResults('Waiting for data...');
-+ 
++
 +                 if (url != '') {
 +                     var xhttp = new XMLHttpRequest();
 +                     xhttp.onreadystatechange = function() {
@@ -1792,37 +1792,37 @@ $ }
 +                 else {
 +                     showResults(processResults(document.documentElement.innerHTML));
 +                 }
-+ 
++
 +                 // Helper functions.
-+ 
++
 +                 function processResults(r) {
 +                     var result = '';
-+ 
++
 +                     console.log('** Fetching results...');
-+ 
++
 +                     result = tasksOfTheCertainKind(
 +                         /(<li><a class=\"issue-link\")(?:.|\r*\n)*?\1/g,
 +                         /data-issue-key=\"(.*?)\"/g,
 +                         '"Super task"'
 +                     );
-+ 
++
 +                     result += tasksOfTheCertainKind(
 +                         /<table id=\"issuetable\".*?>(?:.|\r*\n)*?<div class=\"end-of-stable-message\">/g,
 +                         /(?:<td class=\"stsummary\"><a class=\"issue-link\" data-issue-key=\"(.*?)\")|(?:<tr id=\".*?data-issuekey=\"(.*?)\" class=\"issuerow\">)/g,
 +                         '"Sub task"'
 +                     );
-+ 
++
 +                     result += tasksOfTheCertainKind(
 +                         /<dl class=\"links-list(?:.*?)\">(?:.|\r?\n)*?<dt title=\"(.*)\">(?:.|\r?\n)*?<\/dl>/g,
 +                         /<span title="(?:.|\r*\n)*?<a href=.*?>(.*)<\/a>(?:.|\r*\n)*?<\/span>/g,
 +                         'm[1]'
 +                     );
-+ 
++
 +                     console.log('** Results fetched.');
-+ 
++
 +                     function tasksOfTheCertainKind(groupRe, taskRe, expression) {
 +                         var result = '';
-+ 
++
 +                         var m;
 +                         var count = 0;
 +                         while ((m = groupRe.exec(r)) != null && (++count) < 10) {
@@ -1833,10 +1833,10 @@ $ }
 +                                 result += eval(expression) + '\t' + tasks[i] + '\n';
 +                             }
 +                         }
-+ 
++
 +                         return result;
 +                     }
-+ 
++
 +                     function getTasks(t, taskRe) {
 +                         var result = [];
 +                         var m;
@@ -1845,24 +1845,24 @@ $ }
 +                             console.log(m);
 +                             pushResult(m[1] != undefined ? m[1] : m[2] != undefined ? m[2] : 'unknown', result);
 +                         }
-+ 
++
 +                         function pushResult(r, results) {
 +                             if (results.indexOf(r) == -1) {
 +                                 results.push(r);
 +                             }
 +                         }
-+ 
++
 +                         return result;
 +                     }
-+ 
++
 +                     return result;
 +                     // return r;
 +                 }
-+ 
++
 +                 function getUrl() {
 +                     return document.getElementById('helperURL').value;
 +                 }
-+ 
++
 +                 function showResults(text) {
 +                     document.getElementById('helperResults').value = text;
 +                 }
@@ -1877,51 +1877,51 @@ $ }
 * //
 * window.onload = function() {
 *   console.log('** "Anchor\'s URL" script initialization...');
-*   
+*
 *     // *************************************************
 *     var that = this;
-* 
+*
 *     initHelper();
-* 
+*
 *     // That is it. The next code is just details of implementation.
-* 
+*
 *     function initHelper() {
 *         if (!runInCurrentFrame(that)) {
 *             return;
 *         }
-* 
+*
 *         if (that.helperObject2) {
 *             console.log('** helperObject already exists. Exit.');
 *             return;
 *         }
-* 
+*
 *         console.log('** The Helper just started!');
 *         console.log(that);
-* 
+*
 *         var div = document.createElement('div');
 *         div.className = 'helper';
 *         div.innerHTML = helperHTML();
-* 
+*
 *         document.getElementsByTagName('body')[0]
 *             .children[0].appendChild(div);
-* 
+*
 *         var style = document.createElement('style');
 *         style.innerHTML = helperStyle();
-* 
+*
 *         document.getElementsByTagName('head')[0].appendChild(style);
-* 
+*
 *         that.helperObject = helperObject();
 *     }
-* 
+*
 *     // Used in initHelper().
 *     function runInCurrentFrame(window) {
 *         if (window.name.startsWith('gadget')) {
 *             return false;
 *         }
-* 
+*
 *         return true;
 *     }
-* 
+*
 *     // Used in initHelper().
 *     function helperHTML() {
 *         return '\
@@ -1929,7 +1929,7 @@ $ }
 *             <div><button onclick="helperObject.toggleUrls()">Toggle all URLs</button></div>\
 *         ';
 *     }
-* 
+*
 *     // Used in initHelper().
 *     function helperStyle() {
 *         return '\
@@ -1943,18 +1943,18 @@ $ }
 *             }\
 *         ';
 *     }
-*     
+*
 *     // Used in initHelper().
 *     function helperObject() {
 *         var urlsAreShown = false;
 *         var count = 0;
-* 
+*
 *         return {
 *             toggleUrls: function() {
 *                 $('a').each(function() {
 *                     addUrlSpan(this);
 *                 });
-*                 
+*
 *                 count = 0;
 *                 console.log('Current state: ' + urlsAreShown);
 *                 if (urlsAreShown) {
@@ -1962,7 +1962,7 @@ $ }
 *                         toggleUrl(this, false);
 *                         count++;
 *                     });
-*                     
+*
 *                     urlsAreShown = false;
 *                 }
 *                 else {
@@ -1970,7 +1970,7 @@ $ }
 *                         toggleUrl(this, true);
 *                         count++;
 *                     });
-*                     
+*
 *                     urlsAreShown = true;
 *                 }
 *                 console.log('Toggled: ' + count + ' element(s).');
@@ -1978,32 +1978,32 @@ $ }
 *         }
 *     }
 *     // *************************************************
-*       
+*
 *   var maxCount = 2; // Or 3
-*   
+*
 *   function insertAfter(newNode, referenceNode) {
 *     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 *   }
-*   
+*
 *   function toggleUrl(element, state) {
 *       if (!element.appendedObj) {
 *           return;
 *       }
-*       
+*
 *       // Simple version.
 *       // if (state != undefined) {
 *       //     element.appendedObj.visible = !state;
 *       // }
-*       
+*
 *       // More sophisticated version.
 *       // Do not toggle if all toggled by button.
 *       if (state == undefined && element.appendedObj.toggledOn) {
 *           return;
 *       }
-*       
+*
 *       if (state != undefined) {
 *           element.appendedObj.visible = !state;
-*           
+*
 *           if (state == true) {
 *               element.appendedObj.toggledOn = true;
 *           }
@@ -2011,9 +2011,9 @@ $ }
 *               element.appendedObj.toggledOn = false;
 *           }
 *       }
-*       
+*
 *       //
-*       
+*
 *       if (element.appendedObj.visible) {
 *           //this.appendedObj.url.style.visibility = 'hidden';
 *           element.appendedObj.url.style.display = 'none';
@@ -2025,7 +2025,7 @@ $ }
 *           element.appendedObj.visible = true;
 *       }
 *   }
-*   
+*
 *   function addUrlSpan(element) {
 *       if (!element.appendedObj) {
 *           try {
@@ -2034,7 +2034,7 @@ $ }
 *               //urlSpan.style.visibility = 'hidden';
 *               urlSpan.style.display = 'none';
 *               insertAfter(urlSpan, element);
-*               
+*
 *               element.appendedObj = {};
 *               element.appendedObj.url = urlSpan;
 *               element.appendedObj.mouseOverCount = 2;
@@ -2047,7 +2047,7 @@ $ }
 *           }
 *       }
 *   }
-*   
+*
 *   $('a').mouseover(function(){
 *       if (!this.appendedObj) {
 *           //console.log('1.');
@@ -2064,7 +2064,7 @@ $ }
 *           this.appendedObj.mouseOverCount++;
 *       }
 *   });
-*   
+*
 *   console.log('** "Anchor\'s URL" script initialization complete.');
 * }
 
@@ -2151,134 +2151,156 @@ GM.xmlHttpRequest({
 console.log('** Success.');
 
 
-$$$$$$$    jQuery
-$$$$$$$    +
-$$$$$$$    Autosize 4.0.0
-$$$$$$$    license: MIT
-$$$$$$$    http://www.jacklmoore.com/autosize
-$$$$$$$    https://github.com/jackmoore/autosize
-$$$$$$$  
-$$$$$$$  String.prototype.lines = function() { return this.split(/\r*\n/); }
-$$$$$$$  String.prototype.lineCount = function() { return this.lines().length; }
-$$$$$$$  
-$$$$$$$  function getCreationTime(str) {
-$$$$$$$    var re = /<TEXTAREA class=\"textareaR100\".*\r\n.*\r\n.*\r\n.*\r\n.*\r\n.*/g;
-$$$$$$$    var result = re.exec(str);
-$$$$$$$    var tmp;
-$$$$$$$    while ((tmp = re.exec(str)) != null) {
-$$$$$$$      result = tmp;
-$$$$$$$      console.log(result);
-$$$$$$$      console.log(result[0]);
-$$$$$$$    }
-$$$$$$$    
-$$$$$$$    var reCreation = /<br>(.*)<br>/g;
-$$$$$$$    result = reCreation.exec(result[0]);
-$$$$$$$    
-$$$$$$$    return result[1];
-$$$$$$$  }
-$$$$$$$  
-$$$$$$$  //window.onload = function() {
-$$$$$$$      console.log('** Applying better styles...');
-$$$$$$$  
-$$$$$$$      var st2 = document.createElement('style');
-$$$$$$$      st2.innerHTML =
-$$$$$$$        'textarea {\
-$$$$$$$          resize: vertical;\
-$$$$$$$        }\
-$$$$$$$        textarea, select, input, table {\
-$$$$$$$          border: 0px !important;\
-$$$$$$$          font-size: 10pt !important;\
-$$$$$$$        }\
-$$$$$$$        .tablecell {\
-$$$$$$$          font-family : Verdana, sans-serif;\
-$$$$$$$          font-size: 10pt;\
-$$$$$$$          background-color : #F5F5F5;\
-$$$$$$$          color: Black;\
-$$$$$$$          border: 1pt solid lightgrey;\
-$$$$$$$          padding: 3px;\
-$$$$$$$        }\
-$$$$$$$  			.task-open-btn {\
-$$$$$$$  				border: 1px solid #888 !important;\
-$$$$$$$  			}\
-$$$$$$$        a {\
-$$$$$$$          font-family: Verdana, sans-serif;\
-$$$$$$$          color: #333399;\
-$$$$$$$          background-color: #F5F5F5;\
-$$$$$$$          text-decoration: underline;\
-$$$$$$$          border: 1pt solid #F5F5F5;\
-$$$$$$$          font-size: 10pt !important;\
-$$$$$$$        }';
-$$$$$$$      document.head.appendChild(st2);
-$$$$$$$  
-$$$$$$$      // 1.
-$$$$$$$      $('textarea').attr('rows', '4');
-$$$$$$$      // 2.
-$$$$$$$      autosize($('textarea'));
-$$$$$$$      // 3.
-$$$$$$$      console.log('** 3');
-$$$$$$$      $('textarea')
-$$$$$$$        .removeAttr('readonly')
-$$$$$$$        .css('resize', 'vertical');
-$$$$$$$      console.log('** OK');
-$$$$$$$  
-$$$$$$$  		//
-$$$$$$$  		var issNumInput = document.getElementsByName('issue_no')[0];
-$$$$$$$  		if (issNumInput != null) {
-$$$$$$$        issNumInput.style.float = 'left';
-$$$$$$$        issNumInput.style.marginLeft = '30px';
-$$$$$$$        issNumInput.style.paddingRight = '3px';
-$$$$$$$        var focused = false;
-$$$$$$$        issNumInput.addEventListener('focus', function(){
-$$$$$$$          if (!focused) {
-$$$$$$$          	this.select();
-$$$$$$$            focused = true;
-$$$$$$$          }
-$$$$$$$        });
-$$$$$$$        issNumInput.addEventListener('blur', function(){
-$$$$$$$          focused = false;
-$$$$$$$        });
-$$$$$$$        
-$$$$$$$        var td = issNumInput.parentNode;
-$$$$$$$        td.style.backgroundColor = '#99d9ea';
-$$$$$$$        
-$$$$$$$        var btn = issNumInput.previousSibling.previousSibling;
-$$$$$$$        btn.value = 'Open >>';
-$$$$$$$        btn.classList.add('task-open-btn');
-$$$$$$$        btn.style.marginRight = '10px';
-$$$$$$$        btn.style.height = '19px';
-$$$$$$$        btn.style.width = '80px';
-$$$$$$$        
-$$$$$$$        var textArea = document.createElement('textarea');
-$$$$$$$        document.body.insertBefore(textArea, document.body.lastChild);
-$$$$$$$        
-$$$$$$$        var newBtn = document.createElement('input');
-$$$$$$$        newBtn.type = 'button';
-$$$$$$$        newBtn.classList.add('bluebuttonsmall');
-$$$$$$$        newBtn.innerText = 'Get';
-$$$$$$$        btn.parentNode.insertBefore(newBtn, btn);
-$$$$$$$        newBtn.addEventListener('click', function() {
-$$$$$$$          var xhr = new XMLHttpRequest();
-$$$$$$$          xhr.open('POST', 'http://www...');
-$$$$$$$          xhr.withCredentials = true;
-$$$$$$$          xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-$$$$$$$          xhr.responseType = "arraybuffer";
-$$$$$$$          xhr.onreadystatechange = function() { //Call a function when the state changes.
-$$$$$$$              if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
-$$$$$$$                console.log('Start decoding...');
-$$$$$$$                const contenttype = xhr.getResponseHeader("content-type");
-$$$$$$$                const charset = 'windows-1251';
-$$$$$$$                const dataView = new DataView(xhr.response);
-$$$$$$$                const decoder = new TextDecoder(charset);
-$$$$$$$                var decodedStr = decoder.decode(dataView);
-$$$$$$$                //textArea.value = decoder.decode(dataView);
-$$$$$$$                textArea.value = getCreationTime(decodedStr);
-$$$$$$$                console.log('Yeho!');
-$$$$$$$              }
-$$$$$$$          }
-$$$$$$$  	      var taskId = issNumInput.value;
-$$$$$$$          xhr.send('issue_no=' + taskId + '&iss_per_page=0&h_link=issue_no&h_action=');
-$$$$$$$        });
-$$$$$$$      }
-$$$$$$$  
-$$$$$$$      console.log('** Styles successfully aplied.');
-$$$$$$$  //};
+$$$    jQuery
+$$$    +
+$$$    Autosize 4.0.0
+$$$    license: MIT
+$$$    http://www.jacklmoore.com/autosize
+$$$    https://github.com/jackmoore/autosize
+$$$
+$$$  String.prototype.lines = function() { return this.split(/\r*\n/); }
+$$$  String.prototype.lineCount = function() { return this.lines().length; }
+$$$
+$$$  function getCreationTime(str) {
+$$$    var re = /<TEXTAREA class=\"textareaR100\".*\r\n.*\r\n.*\r\n.*\r\n.*\r\n.*/g;
+$$$    var result = re.exec(str);
+$$$    var tmp;
+$$$    while ((tmp = re.exec(str)) != null) {
+$$$      result = tmp;
+$$$    }
+$$$
+$$$    var reCreation = /<br>(.*)<br>/g;
+$$$    result = reCreation.exec(result[0]);
+$$$
+$$$    return result[1];
+$$$  }
+$$$
+$$$  //window.onload = function() {
+$$$      console.log('** Applying better styles...');
+$$$
+$$$      var st2 = document.createElement('style');
+$$$      st2.innerHTML =
+$$$        'textarea {\
+$$$          resize: vertical;\
+$$$        }\
+$$$        textarea, select, input, table {\
+$$$          border: 0px !important;\
+$$$          font-size: 10pt !important;\
+$$$        }\
+$$$        .getInfo {\
+$$$          margin-left: 4px;\
+$$$        }\
+$$$        .tablecell {\
+$$$          font-family : Verdana, sans-serif;\
+$$$          font-size: 10pt;\
+$$$          background-color : #F5F5F5;\
+$$$          color: Black;\
+$$$          border: 1pt solid lightgrey;\
+$$$          padding: 3px;\
+$$$        }\
+$$$          .task-open-btn {\
+$$$          border: 1px solid #888 !important;\
+$$$        }\
+$$$        a {\
+$$$          font-family: Verdana, sans-serif;\
+$$$          color: #333399;\
+$$$          background-color: #F5F5F5;\
+$$$          text-decoration: underline;\
+$$$          border: 1pt solid #F5F5F5;\
+$$$          font-size: 10pt !important;\
+$$$        }';
+$$$      document.head.appendChild(st2);
+$$$
+$$$      // 1.
+$$$      $('textarea').attr('rows', '4');
+$$$      // 2.
+$$$      autosize($('textarea'));
+$$$      // 3.
+$$$      console.log('** 3');
+$$$      $('textarea')
+$$$        .removeAttr('readonly')
+$$$        .css('resize', 'vertical');
+$$$      console.log('** OK');
+$$$
+$$$      //
+$$$      var issNumInput = document.getElementsByName('issue_no')[0];
+$$$      if (issNumInput != null) {
+$$$        issNumInput.style.float = 'left';
+$$$        issNumInput.style.marginLeft = '30px';
+$$$        issNumInput.style.paddingRight = '3px';
+$$$        var focused = false;
+$$$        issNumInput.addEventListener('focus', function(){
+$$$          if (!focused) {
+$$$              this.select();
+$$$            focused = true;
+$$$          }
+$$$        });
+$$$        issNumInput.addEventListener('blur', function(){
+$$$          focused = false;
+$$$        });
+$$$
+$$$        var td = issNumInput.parentNode;
+$$$        td.style.backgroundColor = '#99d9ea';
+$$$
+$$$        var btn = issNumInput.previousSibling.previousSibling;
+$$$        btn.value = 'Open >>';
+$$$        btn.classList.add('task-open-btn');
+$$$        btn.style.marginRight = '10px';
+$$$        btn.style.height = '19px';
+$$$        btn.style.width = '80px';
+$$$
+$$$
+$$$        var alreadyExists = (document.getElementById('superRow') != null);
+$$$        if (alreadyExists) {
+$$$            return;
+$$$        }
+$$$
+$$$        var tr = issNumInput.parentNode.parentNode;
+$$$        var tbody = tr.parentElement;
+$$$
+$$$        var newTr = document.createElement('tr');
+$$$        newTr.id = 'superRow';
+$$$        tbody.insertBefore(newTr, tr);
+$$$
+$$$        var newTd = document.createElement('td');
+$$$        newTd.setAttribute('colspan', '2');
+$$$        newTr.appendChild(newTd);
+$$$
+$$$        var textArea = document.createElement('textarea');
+$$$        textArea.classList.add('getInfo');
+$$$        document.body.insertBefore(textArea, document.body.lastChild);
+$$$        $('.getInfo').css('resize', 'both');
+$$$
+$$$        var newBtn = document.createElement('input');
+$$$        newBtn.type = 'button';
+$$$        newBtn.classList.add('bluebuttonsmall');
+$$$        newBtn.value = 'Get';
+$$$        newBtn.addEventListener('click', function() {
+$$$          var xhr = new XMLHttpRequest();
+$$$          xhr.open('POST', 'https://www....');
+$$$          xhr.withCredentials = true;
+$$$          xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+$$$          xhr.responseType = 'arraybuffer';
+$$$          xhr.onreadystatechange = function() { //Call a function when the state changes.
+$$$              if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+$$$                console.log('Start decoding...');
+$$$                const contenttype = xhr.getResponseHeader('content-type');
+$$$                const charset = 'windows-1251';
+$$$                const dataView = new DataView(xhr.response);
+$$$                const decoder = new TextDecoder(charset);
+$$$                var decodedStr = decoder.decode(dataView);
+$$$                //textArea.value = decoder.decode(dataView);
+$$$                textArea.value = getCreationTime(decodedStr);
+$$$                console.log('Yahoo!');
+$$$              }
+$$$          }
+$$$            var taskId = issNumInput.value;
+$$$          xhr.send('issue_no=' + taskId + '&iss_per_page=0&h_link=issue_no&h_action=');
+$$$        });
+$$$
+$$$        newTd.appendChild(newBtn);
+$$$        newTd.appendChild(textArea);
+$$$      }
+$$$
+$$$      console.log('** Styles successfully aplied.');
+$$$  //};
