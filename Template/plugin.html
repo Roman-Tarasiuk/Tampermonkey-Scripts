@@ -1,5 +1,18 @@
-<div id="plugindivheader">Additional info</div>
-<button class="btn btn-sm btn-primary" onclick="helperObject.process()">Get info</button>
-<div>
-    <textarea id="info" class="textarea-info" style="resize: both;"></textarea>
+<div id="plugindivheader">
+    Additional info
+    <button class="btn btn-xs btn-info pull-right"
+            type="button"
+            data-toggle="collapse"
+            data-target="#pluginContent"
+            aria-expanded="false"
+            aria-controls="pluginContent"
+            style="margin-left: 3px;">
+        <span class="glyphicon glyphicon-menu-down"></span>
+    </button>
+</div>
+<div class="collapse plugin-content" id="pluginContent">
+    <button class="btn btn-xs btn-info" onclick="helperObject.process()">Get info</button>
+    <div>
+        <textarea id="info" class="textarea-info" style="resize: both;"></textarea>
+    </div>
 </div>
