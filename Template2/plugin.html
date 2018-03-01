@@ -1,0 +1,27 @@
+<div id="plugindivheader">
+    Additional info
+    <span class="pull-right">
+        <button class="btn btn-xs btn-expand"
+                type="button"
+                data-toggle="collapse"
+                data-target="#pluginContent"
+                aria-expanded="false"
+                aria-controls="pluginContent">
+            <span class="glyphicon glyphicon-menu-down"></span>
+        </button>
+        <button type="button"
+                class="close"
+                aria-label="Close"
+                style="margin-left: 3px;"
+                onclick="document.getElementById('plugindiv').hidden = true;">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </span>
+</div>
+<div class="collapse plugin-content" id="pluginContent">
+    <button class="btn btn-xs btn-info pull-left" onclick="helperObject.process()">Get info</button>
+    <input id="taskId" class="pull-left" style="margin-left: 3px;">
+    <div style="background-color: #b3ffd9;">
+        <textarea id="info" class="textarea-info" style="resize: both;"></textarea>
+    </div>
+</div>
