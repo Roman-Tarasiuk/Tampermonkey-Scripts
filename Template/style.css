@@ -29,3 +29,11 @@
 .plugin-content {
     padding: 2px;
 }
+
+.btn-expand {
+    margin-left: 6px;
+    color: #333;
+    background-color: transparent;
+    float: initial;
+    font-size: small;
+}

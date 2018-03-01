@@ -1,17 +1,25 @@
 <div id="plugindivheader">
     Additional info
-    <button class="btn btn-xs btn-info pull-right"
-            type="button"
-            data-toggle="collapse"
-            data-target="#pluginContent"
-            aria-expanded="false"
-            aria-controls="pluginContent"
-            style="margin-left: 3px;">
-        <span class="glyphicon glyphicon-menu-down"></span>
-    </button>
+    <span class="pull-right">
+        <button class="btn btn-xs btn-expand"
+                type="button"
+                data-toggle="collapse"
+                data-target="#pluginContent"
+                aria-expanded="false"
+                aria-controls="pluginContent">
+            <span class="glyphicon glyphicon-menu-down"></span>
+        </button>
+        <button type="button"
+                class="close"
+                aria-label="Close"
+                style="margin-left: 3px;"
+                onclick="document.getElementById('plugindiv').hidden = true;">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </span>
 </div>
 <div class="collapse plugin-content" id="pluginContent">
-    <button class="btn btn-xs btn-info" onclick="helperObject.process()">Get info</button>
+    <button class="btn btn-xs btn-info pull-left" onclick="helperObject.process()">Get info</button>
     <div>
         <textarea id="info" class="textarea-info" style="resize: both;"></textarea>
     </div>
