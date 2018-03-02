@@ -17,7 +17,7 @@ function log(info) {
   }
 }
 
-(function run(){
+(function run() {
     console.log('** run() (Build 011)');
 
     if (typeof helperObject == 'undefined' || helperObject == null) {
@@ -65,14 +65,13 @@ function log(info) {
     }
 
     function tuneBTT() {
-        $('textarea').attr('rows', '4');
+        var textareas = $('textarea');
         // 1.
-        $('textarea').attr('rows', '4');
+        textareas.attr('rows', '4');
         // 2.
-        autosize($('textarea'));
+        autosize(textareas);
         // 3.
-        console.log('** 3');
-        $('textarea')
+        textareas
             .removeAttr('readonly')
             .css('resize', 'vertical');
 
@@ -102,6 +101,12 @@ function log(info) {
             btn.style.marginRight = '10px';
             btn.style.height = '19px';
             btn.style.width = '80px';
+        }
+
+        // 6.
+        var tables = document.getElementsByTagName('table');
+        if (tables.length == 16) {
+            tables[3].classList.add('table-striped');
         }
     }
 })();

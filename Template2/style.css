@@ -87,3 +87,15 @@ a {
     vertical-align: top;
     margin-top: 0px;
 }
+
+table.table-striped > tbody > tr:nth-of-type(3n) > td {
+    background-color: #efe;
+}
+
+table.table-striped > tbody > tr:nth-of-type(3n+1) > td {
+    background-color: #e6f2ff;
+}
+
+table.table-striped > tbody > tr:nth-of-type(3n+2) > td {
+    background-color: #ffe6e6;
+}
