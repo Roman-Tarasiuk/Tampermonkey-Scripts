@@ -68,12 +68,13 @@ function log(info) {
         var textareas = $('textarea');
         // 1.
         textareas.attr('rows', '4');
+
         // 2.
-        autosize(textareas);
+        // Autosize applied in another Tampermonkey script.
+
         // 3.
         textareas
-            .removeAttr('readonly')
-            .css('resize', 'vertical');
+            .removeAttr('readonly');
 
         // 4.
         $('#info').css('resize', 'both');
