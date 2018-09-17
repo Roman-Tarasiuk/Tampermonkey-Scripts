@@ -2365,3 +2365,45 @@ $$$  //};
 
     styleAnchors(docContent);
 })();
+
+
+
+// ==UserScript==
+// @name         RP5 Weather
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        http://rp5.ua/%D0%9F%D0%BE%D0%B3%D0%BE%D0%B4%D0%B0_%D1%83_%D0%9B%D1%8C%D0%B2%D0%BE%D0%B2%D1%96_(%D0%B0%D0%B5%D1%80%D0%BE%D0%BF%D0%BE%D1%80%D1%82)
+//               http://rp5.ua/Погода_у_Львові_(аеропорт)
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    function appendCss (css) {
+        var cssElement = document.createElement('style');
+        cssElement.innerText = css;
+        document.head.appendChild(cssElement);
+    }
+
+    appendCss(`
+.z {
+    font-size: 9px;
+}
+
+.z::after {
+    content: ":00";
+}
+    `);
+
+    var weatherTable = document.getElementById('forecastTable');
+    var timeCells = weatherTable.children[0].children[1].children;
+
+    for (var i = 1; i < timeCells.length; i++) {
+        timeCells[i].classList.add("z");
+    }
+
+    // Your code here...
+})();
