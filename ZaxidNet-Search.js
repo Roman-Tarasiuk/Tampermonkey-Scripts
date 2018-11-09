@@ -142,6 +142,7 @@
                                 else {
                                     resultsEl.value += '\n' + result;
                                     startRow += 10;
+                                    resultsEl.scrollTop = resultsEl.scrollHeight;
                                     processing = false;
                                 }
                             }
