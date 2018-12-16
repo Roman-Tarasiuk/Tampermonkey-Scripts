@@ -17,6 +17,11 @@ var pluginHtml =
         <textarea id="info" class="w"></textarea>
     </div>
     <button onclick="window.helper.process()">Filtered urls</button>
+    <button onclick="window.helper.statistic()">Urls count</button>
+    <label>
+        <input type="file" onchange="window.helper.saveToFile()" style="display: none;">
+        Save...
+    </label>
 </div>
 `;
 
@@ -29,6 +34,10 @@ var pluginCss =
 }
 .w {
     width: 100%;
+}
+.stat {
+    background-color: blue;
+    color: white;
 }
 `;
 
@@ -84,32 +93,111 @@ function Helper() {
         document.head.appendChild(cssElement);
     };
 
-    this.process = function() {
-        var target = document.getElementById(that.idEl.value);
+    function getUrls(html) {
+        var result = [];
 
         var re = /<a.*?href="(.*?)".*?>(.+?)<\/a>/g;
 
-        var result = '';
-
         var href;
-        while ((href = re.exec(target.innerHTML)) != null) {
+        while ((href = re.exec(html)) != null) {
+            result.push({
+                anchor: href[2],
+                url: href[1]
+            });
+        }
+
+        return result;
+    }
+
+    this.process = function() {
+        var targetEl = document.getElementById(that.idEl.value);
+
+        var result = '';
+        var urls = getUrls(targetEl.innerHTML);
+
+        for (var i = 0; i < urls.length; i++) {
             var fullAddress = true;
             // Filtering.
-            if (href[1].startsWith('#')) {
+            if (urls[i].url.startsWith('#')) {
                 continue;
             }
-            if (href[1].startsWith('/')) {
+            if (urls[i].url.startsWith('/')) {
                 fullAddress = false;
             }
             result += '>> ' +
-                      href[2] + // Anchor text.
+                      urls[i].anchor + // Anchor text.
                       (!fullAddress ? '\t***\t' : '\t**\t') +
                       (!fullAddress ? document.location.origin : '') +
-                      href[1] +
+                      urls[i].url +
                       '\n';
         }
 
         document.getElementById('info').value = result;
+    }
+
+     this.statistic = function() {
+        var targetEl = document.getElementById(that.idEl.value);
+
+        var urls = getUrls(targetEl.innerHTML);
+
+        var rows = [];
+        for (var i = 0; i < urls.length; i++) {
+            if (urls[i].url == '' || urls[i].url.startsWith('#')) {
+                continue;
+            }
+
+            rows.push(urls[i].url);
+        }
+
+        var stat = getStatistic(rows);
+
+        var result = targetEl.innerHTML;
+        for (i in stat) {
+            let re = new RegExp('(<a.*?href="' + i.replace(/\?/g, '\\?') + '".*?>)(.+?)(<\/a>)', 'g');
+            result = result.replace(re, '$1$2<sup class="stat">' + stat[i] + '</sup>$3');
+        }
+
+        targetEl.innerHTML = result;
+    }
+
+    function getStatistic(rows) {
+        var result = {};
+
+        for (var i = 0; i < rows.length; i++) {
+            if (rows[i] in result) {
+                result[rows[i]]++;
+            }
+            else {
+                result[rows[i]] = 1;
+            }
+        }
+
+        return result;
+    }
+
+    this.saveToFile = function() {
+        var targetEl = document.getElementById(that.idEl.value);
+        download(targetEl.innerHTML, 'file.txt', 'text/plain');
+    };
+
+    //function download() {}
+
+    function download(data, filename, type) {
+        var file = new Blob([data], {type: type});
+        if (window.navigator.msSaveOrOpenBlob) // IE10+
+            window.navigator.msSaveOrOpenBlob(file, filename);
+        else { // Others
+            var a = document.createElement("a"),
+                url = URL.createObjectURL(file);
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(function() {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 0);
+        }
     }
 }
 
