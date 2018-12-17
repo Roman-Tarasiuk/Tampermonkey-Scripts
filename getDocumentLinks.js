@@ -12,16 +12,13 @@ var pluginHtml =
 `
 <div class="helper">
     <span class="w">Id:</span>
-    <input id="id" class="w">
+    <input id="id" class="w" placeholder="A section Id or empty for document body">
     <div>
         <textarea id="info" class="w"></textarea>
     </div>
     <button onclick="window.helper.process()">Filtered urls</button>
     <button onclick="window.helper.statistic()">Urls count</button>
-    <label>
-        <input type="file" onchange="window.helper.saveToFile()" style="display: none;">
-        Save...
-    </label>
+    <button onclick="window.helper.saveToFile()">Save...</button>
 </div>
 `;
 
@@ -93,6 +90,8 @@ function Helper() {
         document.head.appendChild(cssElement);
     };
 
+    //
+
     function getUrls(html) {
         var result = [];
 
@@ -110,7 +109,18 @@ function Helper() {
     }
 
     this.process = function() {
-        var targetEl = document.getElementById(that.idEl.value);
+        var targetEl = null;
+        if (that.idEl.value == '') {
+            targetEl = document.body;
+        }
+        else {
+            targetEl = document.getElementById(that.idEl.value);
+        }
+        if (targetEl == null) {
+            document.getElementById('info').value = 'Section with Id ' +
+                that.idEl.value + ' does not exist.';
+            return;
+        }
 
         var result = '';
         var urls = getUrls(targetEl.innerHTML);
@@ -135,8 +145,19 @@ function Helper() {
         document.getElementById('info').value = result;
     }
 
-     this.statistic = function() {
-        var targetEl = document.getElementById(that.idEl.value);
+    this.statistic = function() {
+        var targetEl = null;
+        if (that.idEl.value == '') {
+            targetEl = document.body;
+        }
+        else {
+            targetEl = document.getElementById(that.idEl.value);
+        }
+        if (targetEl == null) {
+            document.getElementById('info').value = 'Section with Id ' +
+                that.idEl.value + ' does not exist.';
+            return;
+        }
 
         var urls = getUrls(targetEl.innerHTML);
 
@@ -176,11 +197,21 @@ function Helper() {
     }
 
     this.saveToFile = function() {
-        var targetEl = document.getElementById(that.idEl.value);
+        var targetEl = null;
+        if (that.idEl.value == '') {
+            targetEl = document.body;
+        }
+        else {
+            targetEl = document.getElementById(that.idEl.value);
+        }
+        if (targetEl == null) {
+            document.getElementById('info').value = 'Section with Id ' +
+                that.idEl.value + ' does not exist.';
+            return;
+        }
+
         download(targetEl.innerHTML, 'file.txt', 'text/plain');
     };
-
-    //function download() {}
 
     function download(data, filename, type) {
         var file = new Blob([data], {type: type});
