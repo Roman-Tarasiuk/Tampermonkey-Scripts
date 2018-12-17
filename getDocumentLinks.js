@@ -18,12 +18,16 @@ var pluginHtml =
     </div>
     <button onclick="window.helper.process()">Filtered urls</button>
     <button onclick="window.helper.statistic()">Urls count</button>
-    <button onclick="window.helper.saveToFile()">Save...</button>
+    <button onclick="window.helper.toggleStatistics()">Toggle</button>
+    <button onclick="window.helper.saveToFile()">Save content...</button>
 </div>
 `;
 
 var pluginCss =
 `
+:root {
+  --stat-background-color: #09f;
+}
 .helper {
     height: 260px;
     background-color: #99ccff;
@@ -33,7 +37,8 @@ var pluginCss =
     width: 100%;
 }
 .stat {
-    background-color: blue;
+    display: var(--stat-display);
+    background-color: var(--stat-background-color);
     color: white;
 }
 `;
@@ -54,6 +59,7 @@ function Helper() {
     var that = this;
 
     var idEl = null;
+    var displayStat = true;
 
     this.run = function(html, insertPlace) {
         console.log('** Adding plugin...');
@@ -95,7 +101,7 @@ function Helper() {
     function getUrls(html) {
         var result = [];
 
-        var re = /<a.*?href="(.*?)".*?>(.+?)<\/a>/g;
+        var re = /<a(?:.|\n)*?href="(.*?)".*?>((?:.|\n)+?)<\/a>/g;
 
         var href;
         while ((href = re.exec(html)) != null) {
@@ -174,12 +180,26 @@ function Helper() {
 
         var result = targetEl.innerHTML;
         for (i in stat) {
-            let re = new RegExp('(<a.*?href="' + i.replace(/\?/g, '\\?') + '".*?>)(.+?)(<\/a>)', 'g');
+            let re = new RegExp('(<a(?:.|\n)*?href="' + i.replace(/\?/g, '\\?') + '".*?>)((?:.|\n)+?)(<\/a>)', 'g');
             result = result.replace(re, '$1$2<sup class="stat">' + stat[i] + '</sup>$3');
         }
 
         targetEl.innerHTML = result;
-    }
+    };
+
+    this.toggleStatistics = function() {
+        var bodyStyles = document.body.style;
+        //bodyStyles.setProperty('--stat-background-color', 'red');
+
+        if (displayStat) {
+            bodyStyles.setProperty('--stat-display', 'none');
+            displayStat = false;
+        }
+        else {
+            bodyStyles.setProperty('--stat-display', '');
+            displayStat = true;
+        }
+    };
 
     function getStatistic(rows) {
         var result = {};
