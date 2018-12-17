@@ -101,7 +101,7 @@ function Helper() {
     function getUrls(html) {
         var result = [];
 
-        var re = /<a(?:.|\n)*?href="(.*?)".*?>((?:.|\n)+?)<\/a>/g;
+        var re = /<a(?:.|\n)*?href="(.*?)".*?>((?:.|\n)*?)<\/a>/g;
 
         var href;
         while ((href = re.exec(html)) != null) {
@@ -180,7 +180,7 @@ function Helper() {
 
         var result = targetEl.innerHTML;
         for (i in stat) {
-            let re = new RegExp('(<a(?:.|\n)*?href="' + i.replace(/\?/g, '\\?') + '".*?>)((?:.|\n)+?)(<\/a>)', 'g');
+            let re = new RegExp('(<a(?:.|\n)*?href="' + i.replace(/\?/g, '\\?') + '".*?>)((?:.|\n)*?)(<\/a>)', 'g');
             result = result.replace(re, '$1$2<sup class="stat">' + stat[i] + '</sup>$3');
         }
 
