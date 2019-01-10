@@ -2405,5 +2405,14 @@ $$$  //};
         timeCells[i].classList.add("z");
     }
 
+    var table = document.getElementById('forecastTable');
+    for (var i = 1; i < table.children[0].children[6].children.length; i++) {
+        table.children[0].children[6].children[i].style['font-size']='8pt';
+    }
+    for (var i = 1; i < table.children[0].children[5].children.length; i++) {
+        table.children[0].children[5].children[i].style['font-weight']='100';
+        table.children[0].children[5].children[i].style['font-size']='12pt';
+    }
+
     // Your code here...
 })();
