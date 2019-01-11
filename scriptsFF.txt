@@ -2375,7 +2375,6 @@ $$$  //};
 // @description  try to take over the world!
 // @author       You
 // @match        http://rp5.ua/%D0%9F%D0%BE%D0%B3%D0%BE%D0%B4%D0%B0_%D1%83_%D0%9B%D1%8C%D0%B2%D0%BE%D0%B2%D1%96_(%D0%B0%D0%B5%D1%80%D0%BE%D0%BF%D0%BE%D1%80%D1%82)
-//               http://rp5.ua/Погода_у_Львові_(аеропорт)
 // @grant        none
 // ==/UserScript==
 
@@ -2390,13 +2389,15 @@ $$$  //};
 
     appendCss(`
 .z {
-    font-size: 9px;
+    font-size: 7pt;
 }
-
 .z::after {
     content: ":00";
 }
-    `);
+td > div > b {
+    font-weight: 100;
+}
+`);
 
     var weatherTable = document.getElementById('forecastTable');
     var timeCells = weatherTable.children[0].children[1].children;
@@ -2405,13 +2406,14 @@ $$$  //};
         timeCells[i].classList.add("z");
     }
 
+    var row1 = 5,
+        row2 = 6;
     var table = document.getElementById('forecastTable');
-    for (var i = 1; i < table.children[0].children[6].children.length; i++) {
-        table.children[0].children[6].children[i].style['font-size']='8pt';
+    for (var i = 1; i < table.children[0].children[row1].children.length; i++) {
+        table.children[0].children[row1].children[i].style['font-size']='12pt';
     }
-    for (var i = 1; i < table.children[0].children[5].children.length; i++) {
-        table.children[0].children[5].children[i].style['font-weight']='100';
-        table.children[0].children[5].children[i].style['font-size']='12pt';
+    for (var i = 1; i < table.children[0].children[row2].children.length; i++) {
+        table.children[0].children[row2].children[i].style['font-size']='8pt';
     }
 
     // Your code here...
