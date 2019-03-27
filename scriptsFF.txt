@@ -2374,8 +2374,7 @@ $$$  //};
 // @version      0.1
 // @description  try to take over the world!
 // @author       You
-// @match        http://rp5.ua/%D0%9F%D0%BE%D0%B3%D0%BE%D0%B4%D0%B0_%D1%83_%D0%9B%D1%8C%D0%B2%D0%BE%D0%B2%D1%96_(%D0%B0%D0%B5%D1%80%D0%BE%D0%BF%D0%BE%D1%80%D1%82)
-//               http://rp5.ua/Ïמדמהא_ף_Ëüגמג³_(אונמןמנע)
+// @match        http://rp5.ua/Weather_in_Lviv_(airport)
 // @grant        none
 // ==/UserScript==
 
@@ -2390,13 +2389,15 @@ $$$  //};
 
     appendCss(`
 .z {
-    font-size: 9px;
+    font-size: 7pt;
 }
-
 .z::after {
     content: ":00";
 }
-    `);
+td > div > b {
+    font-weight: 100;
+}
+`);
 
     var weatherTable = document.getElementById('forecastTable');
     var timeCells = weatherTable.children[0].children[1].children;
@@ -2405,14 +2406,49 @@ $$$  //};
         timeCells[i].classList.add("z");
     }
 
+    var row1 = 5, // 4
+        row2 = 6; // 5
     var table = document.getElementById('forecastTable');
-    for (var i = 1; i < table.children[0].children[6].children.length; i++) {
-        table.children[0].children[6].children[i].style['font-size']='8pt';
+    for (var i = 1; i < table.children[0].children[row1].children.length; i++) {
+        table.children[0].children[row1].children[i].style['font-size']='12pt';
     }
-    for (var i = 1; i < table.children[0].children[5].children.length; i++) {
-        table.children[0].children[5].children[i].style['font-weight']='100';
-        table.children[0].children[5].children[i].style['font-size']='12pt';
+    for (var i = 1; i < table.children[0].children[row2].children.length; i++) {
+        table.children[0].children[row2].children[i].style['font-size']='8pt';
     }
+
+    // Your code here...
+})();
+
+
+// ==UserScript==
+// @name         Sinoptik
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        https://ua.sinoptik.ua/%D0%BF%D0%BE%D0%B3%D0%BE%D0%B4%D0%B0-%D0%BB%D1%8C%D0%B2%D1%96%D0%B2*
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    // Open site with some date manually using url like this one:
+    // https://ua.sinoptik.ua/ןמדמהא-כüג³ג/2019-03-28
+
+    window.onload = function() {
+        var xhr = new XMLHttpRequest();
+        // xhr.open('GET', 'https://ua.sinoptik.ua/ןמדמהא-כüג³ג/');
+        xhr.open('GET', document.URL);
+        xhr.onreadystatechange = function() { //Call a function when the state changes.
+            if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+              document.body.innerHTML = xhr.response;
+              console.log('** Loaded...');
+            }
+        };
+        console.log('** Started loading...');
+        xhr.send();
+    };
 
     // Your code here...
 })();

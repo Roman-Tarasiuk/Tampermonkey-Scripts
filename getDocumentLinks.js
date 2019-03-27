@@ -149,7 +149,7 @@ function Helper() {
         }
 
         document.getElementById('info').value = result;
-    }
+    };
 
     this.statistic = function() {
         var targetEl = null;
