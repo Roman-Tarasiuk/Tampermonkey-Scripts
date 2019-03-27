@@ -2376,7 +2376,7 @@ $$$  //};
 // @author       You
 // @match        http://rp5.ua/Weather_in_Lviv_(airport)
 //               http://rp5.ua/%D0%9F%D0%BE%D0%B3%D0%BE%D0%B4%D0%B0_%D1%83_%D0%9B%D1%8C%D0%B2%D0%BE%D0%B2%D1%96_(%D0%B0%D0%B5%D1%80%D0%BE%D0%BF%D0%BE%D1%80%D1%82)
-//               http://rp5.ua/Погода_у_Львові_(аеропорт)
+//               http://rp5.ua/РџРѕРіРѕРґР°_Сѓ_Р›СЊРІРѕРІС–_(Р°РµСЂРѕРїРѕСЂС‚)
 // @grant        none
 // ==/UserScript==
 
@@ -2436,11 +2436,11 @@ td > div > b {
     'use strict';
 
     // Open site with some date manually using url like this one:
-    // https://ua.sinoptik.ua/погода-львів/2019-03-28
+    // https://ua.sinoptik.ua/РїРѕРіРѕРґР°-Р»СЊРІС–РІ/2019-03-28
 
     window.onload = function() {
         var xhr = new XMLHttpRequest();
-        // xhr.open('GET', 'https://ua.sinoptik.ua/погода-львів/');
+        // xhr.open('GET', 'https://ua.sinoptik.ua/РїРѕРіРѕРґР°-Р»СЊРІС–РІ/');
         xhr.open('GET', document.URL);
         xhr.onreadystatechange = function() { //Call a function when the state changes.
             if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
