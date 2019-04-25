@@ -2454,3 +2454,231 @@ td > div > b {
 
     // Your code here...
 })();
+
+
+//
+//
+//
+
+// ==UserScript==
+// @name         KredoBank API
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        https://kredobank.com.ua/*
+// @grant        none
+//
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    var pluginCss =
+`
+.helperzz {
+    height: 260px;
+    background-color: #99ccff;
+    padding: 5px;
+}
+
+.w {
+    width: calc(100% - 10px);
+}
+.calculate-btn {
+    background-color: #b3ffb3;
+    padding: 2px;
+}
+`;
+
+    var pluginHtml =
+`
+<div class="helperzz">
+    <label for="price">Price, $:</label>
+    <input type="text" id="price" value="29000" onkeyup="window.helper.calculateUAH()">
+    <label for="clientMoney">Client momey, $:</label>
+    <input type="text" id="clientMoney" value="17800" onkeyup="window.helper.calculateUAH()">
+    <label for="exchangeRate">Exchange rate:</label>
+    <input type="text" id="exchangeRate" value="27.3" onkeyup="window.helper.calculateUAH()">
+    <br>
+    <label for="priceUAH">Price, ₴:</label>
+    <input type="text" id="priceUAH">
+    <label for="clientMoneyUAH">Client momey, ₴:</label>
+    <input type="text" id="clientMoneyUAH">
+    <br>
+    <label for="period">Period (months):</label>
+    <input type="text" id="period" value="60">
+    <br>
+    <button class="calculate-btn" onclick="window.helper.process()">Calculate</button>
+    <br>
+    <textarea id="results" style="resize: both; width: 60%; height: 120px;"></textarea>
+</div>
+`;
+
+    function insertBefore(newNode, referenceNode) {
+        referenceNode.parentNode.insertBefore(newNode, referenceNode);
+    }
+
+    function insertAfter(newNode, referenceNode) {
+        referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+    }
+
+    function Helper() {
+
+        // Configurations.
+        var stopSearchStr = "нічого не знайдено";
+
+        // Main functionality.
+        var that = this;
+
+        this.resultsEl = null;
+        this.priceEl = null;
+        this.clientMoneyEl = null;
+        this.priceUAHEl = null;
+        this.clientMoneyUAHEl = null;
+        this.exchangeRateEl = null;
+        this.periodEl = null;
+
+
+        this.run = function(html, insertPlace) {
+            console.log('** Adding plugin...');
+
+            var plugin = document.createElement('div');
+            plugin.id = 'plugindiv';
+            plugin.innerHTML = html;
+
+            if (insertPlace) {
+                if (insertPlace.before) {
+                    insertBefore(plugin, insertPlace.before);
+                }
+                else if (insertPlace.after) {
+                    insertAfter(plugin, insertPlace.after);
+                }
+            }
+            else {
+                document.body.appendChild(plugin);
+            }
+
+            that.priceEl = document.getElementById('price');
+            that.clientMoneyEl = document.getElementById('clientMoney');
+            that.priceUAHEl = document.getElementById('priceUAH');
+            that.clientMoneyUAHEl = document.getElementById('clientMoneyUAH');
+            that.exchangeRateEl = document.getElementById('exchangeRate');
+            that.periodEl = document.getElementById('period');
+            that.resultsEl = document.getElementById('results');
+
+            this.calculateUAH();
+
+            console.log('** Plugin added. (' + new Date() + ')');
+        };
+
+        this.appendCss = function (css) {
+            var cssElement = document.createElement('style');
+            cssElement.innerText = css;
+            document.head.appendChild(cssElement);
+        };
+
+        this.process = function() {
+            console.log('** Processing started...');
+
+            var that = this;
+
+            var priceUSD = parseFloat(that.priceEl.value);
+            var clientMoneyUSD = parseFloat(that.clientMoneyEl.value);
+            var exchangeRate = parseFloat(that.exchangeRateEl.value);
+            var period = parseFloat(that.periodEl.value);
+
+            var priceUAH = priceUSD * exchangeRate;
+            var clientMoneyUAH = clientMoneyUSD * exchangeRate;
+
+            that.resultsEl.value = '...';
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.open('POST', 'https://kredobank.com.ua/api/calculator/25');
+            xhttp.withCredentials = true;
+            xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
+
+            xhttp.onreadystatechange = function() { //Call a function when the state changes.
+                if(xhttp.readyState == XMLHttpRequest.DONE && xhttp.status == 200) {
+                    var result = that.parseResults(xhttp.response, period, exchangeRate, priceUSD, clientMoneyUSD);
+                    that.resultsEl.value = result;
+                }
+            }
+
+            var queryStr = 'PRICE=' + priceUAH + '&UVK=' + clientMoneyUAH + '&TERM=' + period;
+            console.log(queryStr);
+
+            xhttp.send(queryStr);
+        };
+
+        this.parseResults = function(resultStr, period, exchangeRate, priceUSD, clientMoneyUSD) {
+            var result = '';
+            var resultObj = JSON.parse(resultStr);
+
+            var monthPaymentUSD = resultObj.res.data.annuity.annuity.month_payment_res.value[0] / exchangeRate;
+            var monthPaymentUAH = resultObj.res.data.annuity.annuity.month_payment_res.value[0];
+            var totalPaymentsUSD = resultObj.res.data.annuity.annuity.month_payment_res.value[0] * period / exchangeRate;
+            var totalPaymentsUAH = resultObj.res.data.annuity.annuity.month_payment_res.value[0] * period;
+            var overpaymentUSD = totalPaymentsUSD - (priceUSD - clientMoneyUSD);
+            var overpaymentUAH = totalPaymentsUAH - (priceUSD - clientMoneyUSD) * exchangeRate;
+
+            result = 'Credit, $\tPrice, $\tPrice, ₴\tMonths\tOwn, $\tOwn, ₴\t'
+                     + 'Month, $\tMonth, ₴\tTotal, $\tTotal, ₴\tOverpay., $\tOverpay., ₴\n'
+
+                     + (priceUSD - clientMoneyUSD) + '\t'
+                     + Math.round(priceUSD) + '\t'
+                     + Math.round(priceUSD * exchangeRate) + '\t'
+                     + period + '\t'
+                     + clientMoneyUSD + '\t'
+                     + clientMoneyUSD * exchangeRate + '\t'
+
+                     + Math.round(monthPaymentUSD) + '\t'
+                     + Math.round(monthPaymentUAH) + '\t'
+                     + Math.round(totalPaymentsUSD) + '\t'
+                     + Math.round(totalPaymentsUAH) + '\t'
+                     + Math.round(overpaymentUSD) + '\t'
+                     + Math.round(overpaymentUAH);
+
+            return result;
+        };
+
+        this.calculateUAH = function() {
+            console.log('keydown...');
+            var price = parseFloat(that.priceEl.value);
+            var clientMoney = parseFloat(that.clientMoneyEl.value);
+            var rate = parseFloat(that.exchangeRateEl.value);
+
+            if (isNaN(price)) {
+                that.priceUAHEl.value = '0';
+            }
+            else if (!isNaN(rate)) {
+                that.priceUAHEl.value = Math.round(price * rate);
+            }
+
+            if (isNaN(clientMoney)) {
+                that.clientMoneyUAHEl.value = '0';
+            }
+            else if (!isNaN(rate)) {
+                that.clientMoneyUAHEl.value = Math.round(clientMoney * rate);
+            }
+
+            if (isNaN(rate)) {
+                that.priceUAHEl.value = '0';
+                that.lientMoneyUAHEl.value = '0';
+            }
+        }
+    }
+
+    var h = new Helper();
+    h.run(pluginHtml);
+    h.appendCss(pluginCss);
+
+    // Remove topmost div.
+    setTimeout(function() {
+        var q = document.getElementsByClassName('loader-site')
+        q[0].parentElement.removeChild(q[0]);
+    }, 1000);
+
+    window.helper = h;
+    // Your code here...
+})();
