@@ -2408,8 +2408,8 @@ td > div > b {
         timeCells[i].classList.add("z");
     }
 
-    var row1 = 5, // 4
-        row2 = 6; // 5
+    var row1 = 5, // Or 4 – Temperature.
+        row2 = 6; // Or 5 – Real feeling (maybe deprecated).
     var table = document.getElementById('forecastTable');
     for (var i = 1; i < table.children[0].children[row1].children.length; i++) {
         table.children[0].children[row1].children[i].style['font-size']='12pt';
@@ -2681,4 +2681,63 @@ td > div > b {
 
     window.helper = h;
     // Your code here...
+})();
+
+
+//
+//
+//
+
+
+// ==UserScript==
+// @name         RP5 Weather
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        http://rp5.ua/*
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    var ftab6contentEl = document.getElementById('ftab_6_content');
+    var forecast6 = ftab6contentEl.innerHTML;
+
+    var ftab3contentEl = document.getElementById('ftab_3_content');
+    var forecast3 = ftab3contentEl.innerHTML;
+
+    var ftab1contentEl = document.getElementById('ftab_1_content');
+    var forecast1 = ftab1contentEl.innerHTML;
+
+    // Waiting for Anti-Adblock done its work, and restore the forecast table content.
+    setTimeout(function() {
+        ftab6contentEl.innerHTML = forecast6;
+        ftab3contentEl.innerHTML = forecast3;
+        ftab1contentEl.innerHTML = forecast1;
+    }, 3000);
+})();
+
+
+// ==UserScript==
+// @name         Google Home
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        https://www.google.com/*
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    var q = document.getElementById('hplogo');
+    var a = document.createElement('a');
+
+    a.setAttribute('href', 'https://www.google.com');
+
+    q.parentNode.appendChild(a);
+    a.appendChild(q);
 })();
