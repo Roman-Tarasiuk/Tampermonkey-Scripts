@@ -2741,3 +2741,182 @@ td > div > b {
     q.parentNode.appendChild(a);
     a.appendChild(q);
 })();
+
+
+//
+//
+//
+// ==UserScript==
+// @name         Jira API
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        http://jira/*
+// @require      http://localhost:8080/BTT/draggable.js
+// @grant        none
+// ==/UserScript==
+
+
+
+(function() {
+    'use strict';
+
+var html =
+`
+<div>
+    <p>API URL:</p>
+    <input type="text" id="api">
+    <button onclick="window.helperObject.load()">Load</button>
+    <br>
+    <input type="text" id="props">
+    <button onclick="window.helperObject.show()">Show</button>
+    <p>Results:</p>
+    <textarea id="results""></textarea>
+</div>
+`;
+
+var css =
+`
+#plugindiv {
+    background-color: rgb(251, 243, 21);
+    top: 100px;
+    position: absolute;
+    z-index: 10000;
+    padding: 8px;
+}
+`;
+
+(function run() {
+    console.log('** run() (Build 011)');
+
+    if (typeof helperObject == 'undefined' || helperObject == null) {
+        console.log('** helperObjectCode(): creating object.');
+        var helperObject = {};
+    }
+    else {
+        console.log('** helperObjectCode(): helperObject already exists.');
+    }
+
+    //
+
+    var plugin = null;
+
+    function closeDragElement(elmt) {
+        elmt.onmousedown = null;
+    }
+
+    function dragging(elmt) {
+        elmt.addEventListener('focus', function() {
+            closeDragElement(plugin);
+        });
+
+        elmt.addEventListener('blur', function() {
+            dragElement(plugin);
+        });
+    }
+
+    function toStringObject(obj, padding, tab) {
+        var result = '';
+        for (var p in obj) {
+            if (typeof(obj[p]) == 'number' || typeof(obj[p]) == 'string') {
+                result += padding + '* ' + p + ': ' + obj[p] + '\n';
+            }
+            else {
+                result += padding + '* ' + p + ':\n' + toStringObject(obj[p], padding + tab, tab);
+            }
+        }
+
+        return result;
+    }
+
+    //
+    // insertPlace object: {before: element} or {after: element}
+    //
+    helperObject.run = function(html, insertPlace) {
+        console.log('** Adding plugin...');
+
+        plugin = document.createElement('div');
+        plugin.id = 'plugindiv';
+        plugin.innerHTML = html;
+
+        if (insertPlace) {
+            if (insertPlace.before) {
+                insertBefore(plugin, insertPlace.before);
+            }
+            else if (insertPlace.after) {
+                insertAfter(plugin, insertPlace.after);
+            }
+        }
+        else {
+            document.body.appendChild(plugin);
+        }
+
+        //
+
+        apiEl = document.getElementById('api');
+        resultsEl = document.getElementById('results');
+        propsEl = document.getElementById('props');
+
+        dragging(apiEl);
+        dragging(resultsEl);
+        dragging(propsEl);
+
+        //
+
+        console.log('** Plugin added.');
+    }
+
+    helperObject.appendCss = function (css) {
+        var cssElement = document.createElement('style');
+        cssElement.innerText = css;
+        document.head.appendChild(cssElement);
+    }
+
+    window.helperObject = helperObject;
+
+    //
+
+    var data = null;
+    var apiEl = null;
+    var resultsEl = null;
+    var propsEl = null;
+
+    helperObject.load = function() {
+        console.log('Loading...');
+
+        resultsEl.value = 'Loading...'
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', apiEl.value);
+        xhr.withCredentials = true;
+        xhr.onreadystatechange = function() { //Call a function when the state changes.
+            if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+                console.log('Loading done.');
+                resultsEl.value = 'Done.';
+                data = JSON.parse(xhr.response);
+            }
+        }
+        xhr.send();
+    }
+
+    helperObject.show = function() {
+        // console.log(data);
+        // resultsEl.value = eval('data' + (propsEl.value != '' ? '.' + propsEl.value : ''));
+        // resultsEl.value = data.toString();
+        var result = eval('data' + (propsEl.value != '' ? '.' + propsEl.value : ''));
+        // var resultStr = '';
+        // for (var i in result) {
+        //     resultStr += i + ': ' + result[i] + '\n';
+        // }
+        // console.log(result);
+        // resultsEl.value = resultStr;
+        resultsEl.value = toStringObject(result, "", "    ");
+    }
+})();
+
+    helperObject.run(html);
+    helperObject.appendCss(css);
+
+    // Your code here...
+})();
