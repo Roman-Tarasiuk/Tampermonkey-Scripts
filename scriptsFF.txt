@@ -2771,6 +2771,8 @@ var html =
     <br>
     <input type="text" id="props">
     <button onclick="window.helperObject.show()">Show</button>
+    <br>
+    <button onclick="helperObject.listProjects()">Projects</button>
     <p>Results:</p>
     <textarea id="results""></textarea>
 </div>
@@ -2806,7 +2808,7 @@ var css =
         elmt.onmousedown = null;
     }
 
-    function dragging(elmt) {
+    function excludeDragging(elmt) {
         elmt.addEventListener('focus', function() {
             closeDragElement(plugin);
         });
@@ -2852,15 +2854,17 @@ var css =
             document.body.appendChild(plugin);
         }
 
+        dragElement(plugin);
+
         //
 
         apiEl = document.getElementById('api');
         resultsEl = document.getElementById('results');
         propsEl = document.getElementById('props');
 
-        dragging(apiEl);
-        dragging(resultsEl);
-        dragging(propsEl);
+        excludeDragging(apiEl);
+        excludeDragging(resultsEl);
+        excludeDragging(propsEl);
 
         //
 
@@ -2874,6 +2878,60 @@ var css =
     }
 
     window.helperObject = helperObject;
+
+    var MAX_LOAD_COUNT = 5;
+
+    function getProjectIssues(project) {
+        return new Promise(function(resolve, reject){
+            console.log('Loading ' + project + '...');
+            var loadCount = 0;
+            var xhr = new XMLHttpRequest();
+            // document.location.origin is used here implicitly
+            // because the Jira API are hosted on the same server.
+            xhr.open('GET', document.location.origin + '/jira/rest/api/2/search?jql=project="' + project + '"&maxResults=1');
+            xhr.withCredentials = true;
+            xhr.onreadystatechange = function() {
+                loadCount++;
+                // console.log(loadCount);
+                if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+                    console.log(project + ': done.');
+                    var result = JSON.parse(xhr.response);
+                    resolve(result.total);
+                }
+                else if (loadCount >= MAX_LOAD_COUNT) {
+                    reject(xhr.status);
+                }
+            }
+            xhr.send();
+        });
+    }
+
+    helperObject.listProjects = async function() {
+        if (data == null) {
+            resultsEl.value = 'No data loaded.';
+            return;
+        }
+
+        var resultStr = '';
+        for (var p in data) {
+            var project = data[p];
+
+            try {
+                var total = await getProjectIssues(project.key);
+            }
+            catch (error) {
+                console.log('Error while loading ' + project.name + ': ' + error);
+            }
+            resultStr += project.key + '\t'
+                       + project.name + '\t'
+                       + (project.projectCategory ? project.projectCategory.name : '**') + '\t'
+                       + total + '\n';
+        }
+
+        console.log('** All projects loaded.');
+
+        resultsEl.value = resultStr;
+    }
 
     //
 
@@ -2890,7 +2948,7 @@ var css =
         var xhr = new XMLHttpRequest();
         xhr.open('GET', apiEl.value);
         xhr.withCredentials = true;
-        xhr.onreadystatechange = function() { //Call a function when the state changes.
+        xhr.onreadystatechange = function() {
             if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
                 console.log('Loading done.');
                 resultsEl.value = 'Done.';
@@ -2901,16 +2959,8 @@ var css =
     }
 
     helperObject.show = function() {
-        // console.log(data);
-        // resultsEl.value = eval('data' + (propsEl.value != '' ? '.' + propsEl.value : ''));
-        // resultsEl.value = data.toString();
         var result = eval('data' + (propsEl.value != '' ? '.' + propsEl.value : ''));
-        // var resultStr = '';
-        // for (var i in result) {
-        //     resultStr += i + ': ' + result[i] + '\n';
-        // }
-        // console.log(result);
-        // resultsEl.value = resultStr;
+
         resultsEl.value = toStringObject(result, "", "    ");
     }
 })();
