@@ -50,11 +50,28 @@
     var css2 = GM_getResourceText('css2');
     helperObject.appendCss(css2);
 
+    // Important:
+    // Set
+    // ta.style.height = endHeight + 2 + 20 + 'px';
+    // in the function resize() in the autosize.js;
     autosize($('textarea'));
     $('textarea')
       .attr('rows', '4')
       .removeAttr('readonly')
-      .css('resize', 'vertical');
+      .css('resize', 'vertical')
+      //.css('white-space', 'pre')
+      .css('overflow-y', 'hidden')
+      .css('overflow', 'auto')
+      .dblclick(function (){
+        var el = $(this);
+        if (el.css('white-space') == 'pre') {
+            el.css('white-space', 'pre-wrap');
+        }
+        else {
+            el.css('white-space', 'pre');
+        }
+        this.setSelectionRange(0, 0);
+      });
 
     if (document.title == "Изменение заявки") {
         var q = document.getElementById('Table3');
